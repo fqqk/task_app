@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: db
+  username: postgres
+  password: password
+  host: db
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  database: task_app_development
+
+test:
+  <<: *default
+  database: task_app_test
+  db: <%= ENV.fetch("PGHOST") { 'db' } %>
