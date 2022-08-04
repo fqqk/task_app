@@ -153,6 +153,14 @@ GEM
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
     jmespath (1.6.1)
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
+    letter_opener_web (1.4.1)
+      actionmailer (>= 3.2)
+      letter_opener (~> 1.0)
+      railties (>= 3.2)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -342,6 +350,7 @@ DEPENDENCIES
   guard-minitest (= 2.4.6)
   image_processing (= 1.9.3)
   jbuilder (= 2.9.1)
+  letter_opener_web
   listen
   mini_magick (= 4.9.5)
   pg

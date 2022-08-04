@@ -1,0 +1,18 @@
+<header class="header">
+<nav class="d-flex justify-content-between bg-dark  align-items-center">
+  <div class="d-flex">
+    <p><%= link_to "Home", root_path,class:"item"%></p>
+    <p><%= link_to "blogs", blogs_path,class:"item" %></p>
+    <p><%= link_to "Users", users_path,class:"item" %></p>
+    <p><%= link_to "contact", new_contact_path,class:"item" %></p>
+  </div>
+  <div class="d-flex  align-items-center">
+     <% if user_signed_in? %>
+      <p><%= link_to "logout", destroy_user_session_path, method: :delete,class:"item" %></p>
+      <p><%= link_to "edit-prof", edit_user_registration_path, method: :delete,class:"item" %></p>
+     <% else %>
+      <p><%= link_to "login", new_user_session_path, class:"item" %></p>
+     <% end %>
+  </div>
+</nav>
+</header>
