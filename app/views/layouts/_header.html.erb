@@ -5,6 +5,7 @@
       <li><%= link_to "マイタスク", root_path,class:""%></li>
       <li><%= link_to "タスク一覧", root_path,class:""%></li>
       <li><%= link_to "ユーザー設定", root_path,class:""%></li>
+      <button class="btn btn-success">fjiaf</button>
       <% if user_signed_in? %>
         <li><%= link_to "サインアウト", destroy_user_session_path, method: :delete,class:"" %></li>
       <% else %>
