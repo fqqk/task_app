@@ -10,9 +10,10 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.create(task_params)
+    @task = Task.new(task_params)
+    @task.user_id = current_user.id
     if @task.save
-      redirect_to task_url(@blog), notice: '新しいタスクを登録しました！'
+      redirect_to task_url(@task), notice: '新しいタスクを登録しました！'
     else
       render :new, alert: "タスクの登録に失敗しました。やり直してください"
     end
@@ -27,9 +28,9 @@ class TasksController < ApplicationController
 
   def destroy
     if @task.destroy
-      redirect_to tasks_url, notice: "ブログを削除しました"
+      redirect_to tasks_url, notice: "タスクを削除しました"
     else
-      render task_url, alert: "ブログの削除に失敗しました"
+      render task_url, alert: "タスクの削除に失敗しました"
     end
   end
 
