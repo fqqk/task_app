@@ -1,6 +1,22 @@
-<h1>Mytask#index</h1>
-<p>Find me in app/views/mytasks/index.html.erb</p>
-<%= link_to "New Task", new_task_path %>
 <div>
-  <p>ここにmyタスク一覧</p>
+  <h1>マイタスク</h1>
+  <%= link_to "New Task", new_task_path, class:"btn" %>
+  <div>
+    <% @mytasks.each do |mytask| %>
+      <div>
+        <h3><%= mytask.title %></h3>
+        <div>
+          <p><%= mytask.content %></p>
+          <p>期限:<%= mytask.deadline %></p>
+          <p>担当者:<%= mytask.user.name %></p>
+          <p>ステータス<%= mytask.status %></p>
+        </div>
+        <div class="btn-list">
+          <%= link_to "詳細", task_path(mytask), class:"btn"%>
+          <%= link_to "編集", edit_task_path(mytask), class:"btn"%>
+          <%= link_to "削除", task_path(mytask),method: :delete,  class:"btn"%>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
