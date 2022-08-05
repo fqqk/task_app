@@ -12,7 +12,7 @@
         <li><%= link_to "サインイン", new_user_session_path, class:"" %></li>
       <% end %>
       <% if user_signed_in? %>
-        <p>ようこそ<%=%>さん</p>
+        <p>ようこそ<%= current_user.name%>さん</p>
       <% end %>
      </ul>
 </nav>
