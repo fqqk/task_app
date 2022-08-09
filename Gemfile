@@ -23,10 +23,10 @@ gem 'rails-i18n', '~> 6.0'
 
 group :development, :test do
   gem 'pg'
-  gem 'byebug',  '11.0.1', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 4.0.1'
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
+  gem 'pry-rails'
 end
 
 group :development do
