@@ -88,7 +88,6 @@ GEM
     bootstrap-will_paginate (1.0.0)
       will_paginate
     builder (3.2.4)
-    byebug (11.0.1)
     capybara (3.36.0)
       addressable
       matrix
@@ -195,6 +194,8 @@ GEM
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     public_suffix (4.0.7)
     puma (4.3.6)
       nio4r (~> 2.0)
@@ -339,7 +340,6 @@ DEPENDENCIES
   bootsnap (= 1.4.5)
   bootstrap-sass (= 3.4.1)
   bootstrap-will_paginate (= 1.0.0)
-  byebug (= 11.0.1)
   capybara
   carrierwave
   devise
@@ -354,6 +354,7 @@ DEPENDENCIES
   listen
   mini_magick (= 4.9.5)
   pg
+  pry-rails
   puma (= 4.3.6)
   rails (= 6.0.3)
   rails-controller-testing
