@@ -1,19 +1,19 @@
-<header class="header">
-<nav>
-    <ul class="d-flex justify-content-between bg-light align-items-center">
-      <li><%= link_to "タスク管理アプリ", root_path,class:""%></li>
-      <li><%= link_to "マイタスク", mytasks_path,class:""%></li>
-      <li><%= link_to "タスク一覧", root_path,class:""%></li>
-      <li><%= link_to "ユーザー設定", edit_user_registration_path,class:""%></li>
-      <button class="btn btn-success">fajifaj</button>
-      <% if user_signed_in? %>
-        <li><%= link_to "サインアウト", destroy_user_session_path, method: :delete,class:"" %></li>
-      <% else %>
-        <li><%= link_to "サインイン", new_user_session_path, class:"" %></li>
-      <% end %>
-      <% if user_signed_in? %>
-        <p>ようこそ<%= current_user.name%>さん</p>
-      <% end %>
-     </ul>
+<header class="border-bottom border-light">
+<nav class="d-flex justify-content-between bg-light align-items-center p-3">
+  <div>
+    <h5 class="d-inline-block"><%= link_to "タスク管理アプリ", root_path,class:"text-secondary mr-4"%></h5>
+    <%= link_to "マイタスク", mytasks_path,class:"text-secondary mr-4"%>
+    <%= link_to "タスク一覧", root_path,class:"text-secondary mr-4"%>
+    <%= link_to "ユーザー設定", edit_user_registration_path,class:"text-secondary mr-4"%>
+    <% if user_signed_in? %>
+      <%= link_to "サインアウト", destroy_user_session_path, method: :delete,class:"text-secondary mr-5" %>
+    <% else %>
+      <%= link_to "サインイン", new_user_session_path, class:"text-secondary mr-5" %>
+    <% end %>
+  </div>
+
+  <% if user_signed_in? %>
+    <p class="m-0 text-secondary float-right">ようこそ<%= current_user.name%>さん</p>
+  <% end %>
 </nav>
 </header>
