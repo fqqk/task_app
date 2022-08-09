@@ -7,9 +7,9 @@
         <h3><%= mytask.title %></h3>
         <div>
           <p><%= mytask.content %></p>
-          <p>期限:<%= mytask.deadline %></p>
-          <p>担当者:<%= mytask.user.name %></p>
-          <p>ステータス<%= status_text(mytask.status) %></p>
+          <p>期限: <%= mytask.deadline %></p>
+          <p>担当者: <%= mytask.user.name %></p>
+          <p>ステータス: <%= status_text(mytask.status) %></p>
         </div>
         <div class="btn-list">
           <%= link_to "詳細", task_path(mytask), class:"btn btn-outline-dark"%>
