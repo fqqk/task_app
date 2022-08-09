@@ -1,0 +1,19 @@
+<header class="header">
+<nav>
+    <ul class="d-flex justify-content-between bg-light align-items-center">
+      <li><%= link_to "タスク管理アプリ", root_path,class:""%></li>
+      <li><%= link_to "マイタスク", root_path,class:""%></li>
+      <li><%= link_to "タスク一覧", root_path,class:""%></li>
+      <li><%= link_to "ユーザー設定", root_path,class:""%></li>
+      <button class="btn btn-success">fjiaf</button>
+      <% if user_signed_in? %>
+        <li><%= link_to "サインアウト", destroy_user_session_path, method: :delete,class:"" %></li>
+      <% else %>
+        <li><%= link_to "サインイン", new_user_session_path, class:"" %></li>
+      <% end %>
+      <% if user_signed_in? %>
+        <p>ようこそ<%=%>さん</p>
+      <% end %>
+     </ul>
+</nav>
+</header>
