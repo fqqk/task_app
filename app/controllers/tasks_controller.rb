@@ -26,6 +26,14 @@ class TasksController < ApplicationController
   def edit
   end
 
+  def update
+    if @task.update(task_params)
+      redirect_to task_url(@task), notice: 'タスクの編集をしました'
+    else
+      render :edit, alert: 'タスクの編集に失敗しました。やり直してください'
+    end
+  end
+
   def destroy
     if @task.destroy
       redirect_to tasks_url, notice: "タスクを削除しました"
