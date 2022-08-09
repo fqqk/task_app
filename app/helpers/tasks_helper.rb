@@ -6,4 +6,14 @@ module TasksHelper
       "更新する"
     end
   end
+
+  def status_text(task_status)
+    if task_status == "incomplete"
+      "未対応"
+    elsif task_status == "doing"
+      "対応中"
+    else
+      "完了"
+    end
+  end
 end
