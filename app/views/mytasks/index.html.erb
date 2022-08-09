@@ -1,7 +1,7 @@
 <div>
   <h1>マイタスク</h1>
-  <%= link_to "New Task", new_task_path, class:"btn" %>
-  <div>
+  <%= link_to "New Task", new_task_path, class:"btn btn-outline-dark" %>
+  <div class="mt-2">
     <% @mytasks.each do |mytask| %>
       <div>
         <h3><%= mytask.title %></h3>
@@ -12,9 +12,9 @@
           <p>ステータス<%= mytask.status %></p>
         </div>
         <div class="btn-list">
-          <%= link_to "詳細", task_path(mytask), class:"btn"%>
-          <%= link_to "編集", edit_task_path(mytask), class:"btn"%>
-          <%= link_to "削除", task_path(mytask),method: :delete,  class:"btn"%>
+          <%= link_to "詳細", task_path(mytask), class:"btn btn-outline-dark"%>
+          <%= link_to "編集", edit_task_path(mytask), class:"btn btn-info"%>
+          <%= link_to "削除", task_path(mytask),method: :delete,  class:"btn btn-danger"%>
         </div>
       </div>
     <% end %>

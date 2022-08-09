@@ -11,24 +11,24 @@
   <% end %>
 
   <div class="form-item">
-    <%= form.label :title, class:"form-label" %>
-    <%= form.text_field :title,class:"form-control w-50" %>
+    <%= form.label :title, class:"form-label font-weight-bold" %>
+    <%= form.text_field :title,class:"form-control" %>
   </div>
 
   <div class="form-item">
-    <%= form.label :content, class:"form-label" %>
+    <%= form.label :content, class:"form-label font-weight-bold" %>
     <%= form.text_area :content, class:"form-control",rows:"3" %>
   </div>
 
   <div class="form-item">
-    <%= form.label :deadline, class:"form-label" %>
+    <%= form.label :deadline, class:"form-label font-weight-bold" %>
     <%= form.datetime_select :deadline %>
   </div>
 
   <div class="form-item">
-    <%= form.label "未対応", class:"form-label" %>
+    <%= form.label "未対応", class:"form-label font-weight-bold" %>
     <%= form.radio_button :status, :incomplete %>
-    <%= form.label "対応中", class:"form-label" %>
+    <%= form.label "対応中", class:"form-label font-weight-bold" %>
     <%= form.radio_button :status, :doing %>
   </div>
 
