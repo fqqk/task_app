@@ -16,4 +16,21 @@ module TasksHelper
       "完了"
     end
   end
+
+  def h_style(deadline)
+    if deadline > DateTime.now
+      "h-within-deadline"
+    else
+      "h-over-deadline"
+    end
+  end
+
+  def border_style(deadline)
+    if deadline > DateTime.now
+      "border-within-deadline"
+    else
+      "border-over-deadline"
+    end
+  end
+
 end
