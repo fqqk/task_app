@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[show edit update destroy]
+  before_action :set_task, only: %i[show edit update destroy assign]
   before_action :is_authorized_user?, only: %i[ edit update destroy assign ]
   before_action :authenticate_user!
   def index
@@ -27,6 +27,11 @@ class TasksController < ApplicationController
   end
 
   def assign
+    @users = User.all
+  end
+
+  def update_assign
+    @task.update(user_id:params[:user_id])
   end
 
   def update
@@ -52,7 +57,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :content, :deadline, :status)
+    params.require(:task).permit(:title, :content, :deadline, :status, :user_id)
   end
 
   def is_authorized_user?

@@ -1,0 +1,30 @@
+<div class="container">
+  <h1>アサイン</h1>
+  <div class="d-flex justfy-content-between">
+    <div>
+      <p>現在アサインされているユーザー</p>
+      <p><%= @task.user.name %></p>
+    </div>
+    <div>
+      <p>新しくアサインするユーザー</p>
+      <%= form_with(model: @task, local: false) do |form| %>
+        <div class="select">
+          <%= form.select :user_id, options_for_select(@users.map{|user| [user.name, user.id]}), { include_blank: '選択してください'}, {class: 'form-control'} %>
+        </div>
+        <%= form.hidden_field :title, value: @task.title %>
+        <%= form.hidden_field :content, value: @task.content %>
+        <%= form.hidden_field :deadline, value: @task.deadline %>
+        <%= form.hidden_field :status, value: @task.status %>
+        <div>
+          <%= form.submit 'アサインする', class:"btn btn-success"%>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="bg-light py-5 px-4 rounded-sm">
+    <h1><%= @task.title%></h1>
+    <p><%= @task.content%></p>
+    <p>期限: <%= @task.deadline%></p>
+    <p>ステータス: <%= status_text(@task.status)%></p>
+  </div>
+</div>
