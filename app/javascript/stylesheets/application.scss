@@ -1,1 +1,19 @@
 @import "~bootstrap/scss/bootstrap";
+
+.h-within-deadline {
+  background-color: green;
+  color: white;
+}
+
+.h-over-deadline {
+  background-color: red;
+  color: white;
+}
+
+.border-within-deadline {
+  border: 1px solid green;
+}
+
+.border-over-deadline {
+  border: 1px solid red;
+}
