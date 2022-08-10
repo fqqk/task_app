@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy]
+  before_action :is_authorized_user?, only: %i[ edit update destroy assign ]
   before_action :authenticate_user!
   def index
     @tasks = Task.all
@@ -20,10 +21,12 @@ class TasksController < ApplicationController
   end
 
   def show
-
   end
 
   def edit
+  end
+
+  def assign
   end
 
   def update
@@ -50,5 +53,10 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:title, :content, :deadline, :status)
+  end
+
+  def is_authorized_user?
+    @tasks = current_user.tasks
+    redirect_to root_url, alert: '権限がありません' unless @tasks.exists?(id: params[:id])
   end
 end
