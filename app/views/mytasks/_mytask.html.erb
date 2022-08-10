@@ -1,0 +1,14 @@
+<div class="mb-3 rounded-sm">
+  <h4><%= mytask.title%></h4>
+  <p><%= mytask.content%></p>
+  <p>期限: <%= mytask.deadline%></p>
+  <p>担当者: <%= mytask.user.name%></p>
+  <p>ステータス: <%= status_text(mytask.status)%></p>
+  <div class="btn-list">
+    <%= link_to "詳細", task_path(mytask), class:"btn btn-outline-dark"%>
+    <% if task.user == current_user%>
+      <%= link_to "編集", edit_task_path(mytask), class:"btn btn-info"%>
+      <%= link_to "削除", task_path(mytask),method: :delete,  class:"btn btn-danger"%>
+    <% end %>
+  </div>
+</div>
