@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_action :is_authorized_user?, only: %i[ edit update destroy assign ]
   before_action :authenticate_user!
   def index
-    @tasks = Task.all
+    @tasks = Task.not_complete
   end
 
   def new
