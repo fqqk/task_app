@@ -17,11 +17,11 @@ module TasksHelper
     end
   end
 
-  def h_style(deadline)
+  def p_style(deadline)
     if deadline > DateTime.now
-      "h-within-deadline"
+      "p-within-deadline"
     else
-      "h-over-deadline"
+      "p-over-deadline"
     end
   end
 

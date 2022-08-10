@@ -3,7 +3,7 @@
   <%= link_to "New Task", new_task_path, class:"btn btn-outline-dark" %>
   <div class="row row-col">
     <% @mytasks.each do |mytask| %>
-    <div class="d-flex flex-column col-xs-1 col-lg-6">
+    <div class="d-flex flex-column col-xs-1 col-lg-6 mb-3">
       <%= render mytask %>
     </div>
     <% end %>
