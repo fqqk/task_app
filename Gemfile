@@ -22,6 +22,8 @@ gem 'devise-i18n'
 gem 'rails-i18n', '~> 6.0'
 gem 'kaminari'
 gem 'bootstrap4-kaminari-views'
+gem 'dotenv-rails'
+gem 'slack-ruby-client'
 
 group :development, :test do
   gem 'pg'

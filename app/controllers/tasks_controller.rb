@@ -14,7 +14,52 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
+    client = Slack::Web::Client.new
     if @task.save
+      client.chat_postMessage(
+        channel: '#実験場所',
+        blocks: [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "#{@task.user.name}さんがタスクの新規作成を行いました:fire:"
+            }
+          },
+          {
+            "type": "header",
+            "text": {
+              "type": "plain_text",
+              "text": "生成されたタスク↓",
+              "emoji": true
+            }
+          },
+          {
+            "type": "actions",
+            "elements": [
+              {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "emoji": true,
+                  "text": "#{@task.title}"
+                },
+                "style": "primary",
+                "url": "http://localhost:8080/tasks/#{@task.id}"
+              },
+              {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "emoji": true,
+                  "text": "コメントする"
+                },
+                "url": "https://news.google.co.jp/"
+              }
+            ]
+          }
+        ]
+      )
       redirect_to task_url(@task), notice: t(".notice")
     else
       render :new, alert: t(".alert")
