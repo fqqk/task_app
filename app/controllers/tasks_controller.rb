@@ -14,9 +14,9 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     @task.user_id = current_user.id
     if @task.save
-      redirect_to task_url(@task), notice: '新しいタスクを登録しました！'
+      redirect_to task_url(@task), notice: t(".notice")
     else
-      render :new, alert: "タスクの登録に失敗しました。やり直してください"
+      render :new, alert: t(".alert")
     end
   end
 
@@ -32,25 +32,25 @@ class TasksController < ApplicationController
 
   def update_assign
     if @task.update(user_id:params[:task][:user_id])
-      redirect_to task_url(@task), notice: '担当者を変更しました'
+      redirect_to task_url(@task), notice: t(".notice")
     else
-      render :index, alert: '担当者の変更に失敗しました'
+      render :index, alert: t(".alert")
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to task_url(@task), notice: 'タスクの編集をしました'
+      redirect_to task_url(@task), notice: t(".notice")
     else
-      render :edit, alert: 'タスクの編集に失敗しました。やり直してください'
+      render :edit, alert: t(".alert")
     end
   end
 
   def destroy
     if @task.destroy
-      redirect_to tasks_url, notice: "タスクを削除しました"
+      redirect_to tasks_url, notice: t(".notice")
     else
-      render task_url, alert: "タスクの削除に失敗しました"
+      render task_url, alert: t(".alert")
     end
   end
 
@@ -66,6 +66,6 @@ class TasksController < ApplicationController
 
   def is_authorized_user?
     @tasks = current_user.tasks
-    redirect_to root_url, alert: '権限がありません' unless @tasks.exists?(id: params[:id])
+    redirect_to root_url, alert: t(".alert") unless @tasks.exists?(id: params[:id])
   end
 end

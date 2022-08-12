@@ -1,0 +1,16 @@
+ja:
+  tasks:
+    create:
+      notice: "新しいタスクを登録しました！"
+      alert: "タスクの登録に失敗しました。やり直してください"
+    update:
+      notice: "タスクの更新に成功しました。"
+      alert: "タスクの更新ができませんでした。"
+    update_assign:
+      notice: "担当者を変更しました"
+      alert: "担当者の変更に失敗しました"
+    destroy:
+      notice: "タスクを削除しました"
+      alert: "タスクの削除に失敗しました"
+    is_authorized_user?:
+      alert: "権限がありません"
