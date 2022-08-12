@@ -2,8 +2,9 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy assign update_assign]
   before_action :is_authorized_user?, only: %i[ edit update destroy assign update_assign]
   before_action :authenticate_user!
+
   def index
-    @tasks = Task.not_complete
+    @tasks = Task.not_complete.page(params[:page]).limit(6)
   end
 
   def new
