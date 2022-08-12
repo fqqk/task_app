@@ -7,14 +7,10 @@
     </div>
     <div>
       <p>新しくアサインするユーザー</p>
-      <%= form_with(model: @task, local: false) do |form| %>
+      <%= form_with(model: @tasks, url: update_assign_task_path, local: false, method: :patch) do |form| %>
         <div class="select">
           <%= form.select :user_id, options_for_select(@users.map{|user| [user.name, user.id]}), { include_blank: '選択してください'}, {class: 'form-control'} %>
         </div>
-        <%= form.hidden_field :title, value: @task.title %>
-        <%= form.hidden_field :content, value: @task.content %>
-        <%= form.hidden_field :deadline, value: @task.deadline %>
-        <%= form.hidden_field :status, value: @task.status %>
         <div>
           <%= form.submit 'アサインする', class:"btn btn-success"%>
         </div>

@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[show edit update destroy assign]
-  before_action :is_authorized_user?, only: %i[ edit update destroy assign ]
+  before_action :set_task, only: %i[show edit update destroy assign update_assign]
+  before_action :is_authorized_user?, only: %i[ edit update destroy assign update_assign]
   before_action :authenticate_user!
   def index
     @tasks = Task.not_complete
@@ -31,7 +31,11 @@ class TasksController < ApplicationController
   end
 
   def update_assign
-    @task.update(user_id:params[:user_id])
+    if @task.update(user_id:params[:task][:user_id])
+      redirect_to task_url(@task), notice: '担当者を変更しました'
+    else
+      render :index, alert: '担当者の変更に失敗しました'
+    end
   end
 
   def update
@@ -57,7 +61,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :content, :deadline, :status, :user_id)
+    params.require(:task).permit(:title, :content, :deadline, :status)
   end
 
   def is_authorized_user?
