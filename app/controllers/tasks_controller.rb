@@ -4,7 +4,15 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @tasks = Task.not_complete.page(params[:page]).limit(6)
+    if params[:new]
+      @tasks = Task.not_complete.latest.page(params[:page]).limit(6)
+    elsif params[:old]
+      @tasks = Task.not_complete.old.page(params[:page]).limit(6)
+    elsif params[:emergency]
+      @tasks = Task.not_complete.emergency.page(params[:page]).limit(6)
+    else
+     @tasks = Task.not_complete.page(params[:page]).limit(6)
+    end
   end
 
   def new

@@ -6,4 +6,8 @@ class Task < ApplicationRecord
   validates :content, presence: true, length: { maximum: 140 }
   validates :deadline, presence: true
   validates :status, presence: true
+
+  scope :latest, -> {order(updated_at: :desc)}
+  scope :old, -> {order(updated_at: :asc)}
+  scope :emergency, -> {order(deadline: :asc)}
 end
