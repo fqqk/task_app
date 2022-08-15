@@ -5,13 +5,25 @@ class TasksController < ApplicationController
 
   def index
     if params[:new]
-      @tasks = Task.not_complete.latest.page(params[:page]).limit(6)
+      @tasks = Task.page(params[:page]).latest
     elsif params[:old]
-      @tasks = Task.not_complete.old.page(params[:page]).limit(6)
+      @tasks = Task.page(params[:page]).old
     elsif params[:emergency]
-      @tasks = Task.not_complete.emergency.page(params[:page]).limit(6)
+      @tasks = Task.page(params[:page]).emergency
     else
-     @tasks = Task.not_complete.page(params[:page]).limit(6)
+     @tasks = Task.page(params[:page]).not_complete
+    end
+  end
+
+  def mypage
+    if params[:new]
+      @mytasks = current_user.tasks.latest.page(params[:page]).limit(6)
+    elsif params[:old]
+      @mytasks = current_user.tasks.old.page(params[:page]).limit(6)
+    elsif params[:emergency]
+      @mytasks = current_user.tasks.emergency.page(params[:page]).limit(6)
+    else
+      @mytasks = current_user.tasks.not_complete.page(params[:page]).limit(6)
     end
   end
 
@@ -22,52 +34,8 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
-    client = Slack::Web::Client.new
     if @task.save
-      client.chat_postMessage(
-        channel: '#実験場所',
-        blocks: [
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "#{@task.user.name}さんがタスクの新規作成を行いました:fire:"
-            }
-          },
-          {
-            "type": "header",
-            "text": {
-              "type": "plain_text",
-              "text": "生成されたタスク↓",
-              "emoji": true
-            }
-          },
-          {
-            "type": "actions",
-            "elements": [
-              {
-                "type": "button",
-                "text": {
-                  "type": "plain_text",
-                  "emoji": true,
-                  "text": "#{@task.title}"
-                },
-                "style": "primary",
-                "url": "http://localhost:8080/tasks/#{@task.id}"
-              },
-              {
-                "type": "button",
-                "text": {
-                  "type": "plain_text",
-                  "emoji": true,
-                  "text": "コメントする"
-                },
-                "url": "https://news.google.co.jp/"
-              }
-            ]
-          }
-        ]
-      )
+      @task.send_slack
       redirect_to task_url(@task), notice: t(".notice")
     else
       render :new, alert: t(".alert")
