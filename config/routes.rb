@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   resources :tasks do
     get :assign, on: :member
     patch :update_assign, on: :member
+    get :mypage, on: :collection
   end
-  resources :mytasks, only:[:index]
   devise_for :users
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
