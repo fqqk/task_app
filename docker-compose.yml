@@ -22,15 +22,3 @@ services:
       - db
     tty: true
     stdin_open: true
-
-  webpacker:
-    build: .
-    command: ./bin/webpack-dev-server
-    environment:
-      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
-    tty: true
-    stdin_open: true
-    ports:
-      - "3035:3035"
-    depends_on:
-      - web
