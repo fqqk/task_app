@@ -11,7 +11,7 @@ class TasksController < ApplicationController
     elsif params[:emergency]
       @tasks = Task.emergency.page(params[:page])
     else
-     @tasks = Task.not_complete.page(params[:page])
+     @tasks = Task.where.not(status:"complete").page(params[:page])
     end
   end
 
@@ -23,7 +23,7 @@ class TasksController < ApplicationController
     elsif params[:emergency]
       @mytasks = current_user.tasks.emergency.page(params[:page])
     else
-      @mytasks = current_user.tasks.not_complete.page(params[:page])
+      @mytasks = current_user.tasks.where.not(status: "complete").page(params[:page])
     end
   end
 
