@@ -12,3 +12,50 @@
     <% end %>
   </div>
 </div>
+
+    <%# コメント送る部分 %>
+
+  <div class="mx-auto my-5 w-75">
+  <div class="mx-auto w-75 mb-3">
+     <%= form_with(model: [@task, @comment], local: true) do |f| %>
+      <% if @comment.errors.any? %>
+        <div style="color: red">
+        <h2><%= pluralize(@comment.errors.count, "つのエラーが発生しました") %></h2>
+        <ul>
+          <% @comment.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+        </div>
+      <% end %>
+      <%= f.text_area :comment, :size=>"60x3",placeholder: "コメントする" %>
+      <%= f.hidden_field :task_id, value: @task.id %>
+      <%= f.submit "投稿", class: "btn btn-success mb-4" %>
+    <% end %>
+  </div>
+
+
+    <p class="font-weight-bold border-bottom">コメント件数：<%= @comments.count %>/<%= @task.comments.count%></p>
+    <% @comments.each do |comment| %>
+      <div class="comments-index mb-2">
+        <p class="text-info d-inline mr-3"><%= comment.user.name %></p>
+        <span class="text-secondary"><%= comment.created_at.strftime('%Y/%m/%d') %><br></span>
+          <div class="d-flex">
+            <p class="font-weight-bold bg-light p-3 rounded-lg"><%= comment.comment %></p>
+              <% if comment.user == current_user %>
+              <div class="ml-5">
+              <%= link_to "削除", task_comment_path(comment.task, comment), method: :delete ,data: { confirm: "本当に削除してもいいですか？" } ,class: 'btn btn-danger mr-3' %>
+                <%= link_to "編集", edit_task_comment_path(comment.task, comment), class: 'btn btn-info' %>
+                <% end %>
+              </div>
+          </div>
+    <% end %>
+    <div class="d-flex fs-5 justify-content-center mt-5">
+      <%= paginate @comments, theme: 'twitter-bootstrap-4' %>
+    </div>
+  </div>
+</div>
+
+
+
+  <%# コメント送る部分 %>
