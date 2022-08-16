@@ -14,3 +14,13 @@ ja:
       alert: "タスクの削除に失敗しました"
     is_authorized_user?:
       alert: "権限がありません"
+  comments:
+    create:
+      notice: "コメントを投稿しました。"
+      alert: "コメントの投稿に失敗しました"
+    update:
+      notice: "コメントを編集しました"
+      alert: "コメントの編集ができませんでした"
+    destroy:
+      notice: "コメントを削除しました"
+      alert: "コメントの削除に失敗しました"
