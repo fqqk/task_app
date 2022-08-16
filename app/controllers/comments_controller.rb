@@ -1,44 +1,34 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: %i[ edit update destroy ]
-  before_action :set_task, only: %i[ destroy ]
+  before_action :set_task, only: %i[ create destroy edit ]
 
   def create
-    comment = current_user.comments.new(comment_params)
-    if comment.save
-      respond_to do |format|
-        format.html { redirect_back fallback_location: root_path, notice: 'Comment was successfully created.' }
-        format.json { head :no_content }
-      end
+    @comment = current_user.comments.new(comment_params)
+    if @comment.save
+      redirect_back fallback_location: root_path, notice: t(".notice")
     else
-      redirect_to root_path
+      @comments = @task.comments.reverse_order.page(params[:page])
+      redirect_to task_url(@task), alert: t(".alert")
     end
   end
 
   def edit
-
   end
 
 
   def update
-    respond_to do |format|
-      if @comment.update(comment_params)
-        format.html { redirect_to task_url(@comment.task_id), notice: 'Comment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @comment }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
+    if @comment.update(comment_params)
+      redirect_to task_url(@comment.task_id), notice: t(".notice")
+    else
+      redirect_to task_url(@comment.task_id), alert: t(".alert")
     end
   end
 
   def destroy
     if @comment.destroy
-      respond_to do |format|
-        format.html { redirect_to task_path(@task), notice: 'Comment was successfully destroyed.' }
-        format.json { head :no_content }
-      end
+      redirect_to task_url(@task), notice: t(".notice")
     else
-      redirect_to root_path
+      redirect_to task_url(@task), notice: t(".alert")
     end
   end
 
