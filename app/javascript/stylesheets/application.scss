@@ -1,34 +1,32 @@
 @import "~bootstrap/scss/bootstrap";
 
-$safe-color: #4df055;
-$bad-color: #f22955;
 
 .p-within-deadline {
-  background-color: $safe-color;
+  background-color: #4df055;
   color: white;
   padding: 1rem;
 }
 
 .p-over-deadline {
-  background-color: $bad-color;
+  background-color: #f22955;
   color: white;
   padding: 1rem;
 }
 
 .border-within-deadline {
-  border: 1px solid $safe-color;
+  border: 1px solid #4df055;
   border-radius: 4px;
 }
 
 .border-over-deadline {
-  border: 1px solid $bad-color;
+  border: 1px solid #f22955;
   border-radius: 4px;
 }
 
 .notice {
-  color: $safe-color;
+  color: #4df055;
 }
 
 .alert {
-  color: $bad-color;
+  color: #f22955;
 }
