@@ -38,7 +38,7 @@ class TasksController < ApplicationController
       @task.send_slack
       redirect_to task_url(@task), notice: t(".notice")
     else
-      render :new, alert: t(".alert")
+      redirect_to new_task_url, alert: t(".alert")
     end
   end
 
@@ -58,7 +58,7 @@ class TasksController < ApplicationController
     if @task.update(user_id:params[:task][:user_id])
       redirect_to task_url(@task), notice: t(".notice")
     else
-      render :index, alert: t(".alert")
+      redirect_to tasks_url, alert: t(".alert")
     end
   end
 
@@ -66,7 +66,7 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       redirect_to task_url(@task), notice: t(".notice")
     else
-      render :edit, alert: t(".alert")
+      redirect_to task_url(@task), alert: t(".alert")
     end
   end
 
@@ -74,7 +74,7 @@ class TasksController < ApplicationController
     if @task.destroy
       redirect_to tasks_url, notice: t(".notice")
     else
-      render task_url, alert: t(".alert")
+      redirect_to tasks_url, alert: t(".alert")
     end
   end
 
@@ -90,6 +90,6 @@ class TasksController < ApplicationController
 
   def is_authorized_user?
     @tasks = current_user.tasks
-    redirect_to root_url, alert: t(".alert") unless @tasks.exists?(id: params[:id])
+    redirect_to tasks_url, alert: t(".alert") unless @tasks.exists?(id: params[:id])
   end
 end
