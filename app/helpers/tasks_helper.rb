@@ -32,5 +32,4 @@ module TasksHelper
       "border-over-deadline"
     end
   end
-
 end
