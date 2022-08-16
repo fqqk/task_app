@@ -24,3 +24,11 @@ $bad-color: #f22955;
   border: 1px solid $bad-color;
   border-radius: 4px;
 }
+
+.notice {
+  color: $safe-color;
+}
+
+.alert {
+  color: $bad-color;
+}
