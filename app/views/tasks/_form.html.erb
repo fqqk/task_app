@@ -17,12 +17,12 @@
   <div class="form-item">
     <%= form.label :status, class:"form-label font-weight-bold" %>
     <%= form.label "未対応", class:"form-label" %>
-    <%= form.radio_button :status, :incomplete %>
+    <%= form.radio_button :status, "incomplete" %>
     <%= form.label "対応中", class:"form-label" %>
-    <%= form.radio_button :status, :doing %>
+    <%= form.radio_button :status, "doing" %>
     <% if action_name == "edit"%>
       <%= form.label "完了", class:"form-label" %>
-      <%= form.radio_button :status, :complete %>
+      <%= form.radio_button :status, "complete" %>
     <% end %>
   </div>
 
