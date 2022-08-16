@@ -1,1 +1,32 @@
 @import "~bootstrap/scss/bootstrap";
+
+
+.p-within-deadline {
+  background-color: #4df055;
+  color: white;
+  padding: 1rem;
+}
+
+.p-over-deadline {
+  background-color: #f22955;
+  color: white;
+  padding: 1rem;
+}
+
+.border-within-deadline {
+  border: 1px solid #4df055;
+  border-radius: 4px;
+}
+
+.border-over-deadline {
+  border: 1px solid #f22955;
+  border-radius: 4px;
+}
+
+.notice {
+  color: #4df055;
+}
+
+.alert {
+  color: #f22955;
+}
