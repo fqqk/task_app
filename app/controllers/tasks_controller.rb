@@ -5,25 +5,25 @@ class TasksController < ApplicationController
 
   def index
     if params[:new]
-      @tasks = Task.page(params[:page]).latest
+      @tasks = Task.latest.page(params[:page])
     elsif params[:old]
-      @tasks = Task.page(params[:page]).old
+      @tasks = Task.old.page(params[:page])
     elsif params[:emergency]
-      @tasks = Task.page(params[:page]).emergency
+      @tasks = Task.emergency.page(params[:page])
     else
-     @tasks = Task.page(params[:page]).not_complete
+     @tasks = Task.not_complete.page(params[:page])
     end
   end
 
   def mypage
     if params[:new]
-      @mytasks = current_user.tasks.latest.page(params[:page]).limit(6)
+      @mytasks = current_user.tasks.latest.page(params[:page])
     elsif params[:old]
-      @mytasks = current_user.tasks.old.page(params[:page]).limit(6)
+      @mytasks = current_user.tasks.old.page(params[:page])
     elsif params[:emergency]
-      @mytasks = current_user.tasks.emergency.page(params[:page]).limit(6)
+      @mytasks = current_user.tasks.emergency.page(params[:page])
     else
-      @mytasks = current_user.tasks.not_complete.page(params[:page]).limit(6)
+      @mytasks = current_user.tasks.not_complete.page(params[:page])
     end
   end
 
@@ -43,6 +43,8 @@ class TasksController < ApplicationController
   end
 
   def show
+    @comment = Comment.new
+    @comments = @task.comments.reverse_order.page(params[:page]).per(5)
   end
 
   def edit
