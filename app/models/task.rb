@@ -19,6 +19,7 @@ class Task < ApplicationRecord
     client = Slack::Web::Client.new
     client.chat_postMessage(
       channel: '#実験場所',
+      text: "#{user.name}さんがタスクの新規作成を行いました:fire:",
       blocks: [
         {
           "type": "section",
@@ -31,7 +32,7 @@ class Task < ApplicationRecord
           "type": "header",
           "text": {
             "type": "plain_text",
-            "text": "生成されたタスク↓",
+            "text": "タイトル:#{title}",
             "emoji": true
           }
         },
@@ -43,20 +44,11 @@ class Task < ApplicationRecord
               "text": {
                 "type": "plain_text",
                 "emoji": true,
-                "text": "#{title}"
+                "text": "コメントする"
               },
               "style": "primary",
               "url": "http://localhost:8080/tasks/#{id}"
             },
-            {
-              "type": "button",
-              "text": {
-                "type": "plain_text",
-                "emoji": true,
-                "text": "コメントする"
-              },
-              "url": "https://news.google.co.jp/"
-            }
           ]
         }
       ]
