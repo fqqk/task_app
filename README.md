@@ -1,24 +1,10 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[ER 図](er_diagram.md)
 
-Things you may want to cover:
+# 追加機能
 
-- Ruby version
-
-- System dependencies
-
-- Configuration
-
-- Database creation
-
-- Database initialization
-
-- How to run the test suite
-
-- Services (job queues, cache servers, search engines, etc.)
-
-- Deployment instructions
-
-- ...
+- 検索機能(ransack)
+- タスク作成通知機能(slackAPI)
+- コメント機能
+- 並べ替え機能
