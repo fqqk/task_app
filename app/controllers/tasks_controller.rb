@@ -2,6 +2,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy assign update_assign]
   before_action :is_authorized_user?, only: %i[ edit update destroy assign update_assign]
   before_action :authenticate_user!
+  before_action :set_q, only: [ :index, :search, :mypage ]
 
   def index
     if params[:new]
@@ -78,7 +79,15 @@ class TasksController < ApplicationController
     end
   end
 
+  def search
+    @results = @q.result
+  end
+
   private
+
+  def set_q
+    @q = Task.ransack(params[:q])
+  end
 
   def set_task
     @task = Task.find(params[:id])
