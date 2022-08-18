@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[show edit update destroy assign update_assign]
   before_action :is_authorized_user?, only: %i[ edit update destroy assign update_assign]
   before_action :authenticate_user!
-  before_action :set_q, only: [:index, :search]
+  before_action :set_q, only: [ :index, :search, :mypage ]
 
   def index
     if params[:new]
