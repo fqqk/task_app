@@ -4,7 +4,7 @@
   <div class="d-flex align-items-center">
     <%= search_form_for @q, url: search_tasks_path do |f| %>
     <div class="d-flex mr-5">
-      <%= f.search_field :title_cont, placeholder: "タスクタイトルで検索", class:"form-control" %>
+      <%= f.search_field :title_cont, placeholder: "タスクタイトルで検索", class:"form-control mr-2" %>
       <%= f.submit '検索', class:"btn btn-primary"%>
     </div>
     <% end %>
