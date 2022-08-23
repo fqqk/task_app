@@ -60,22 +60,6 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    aws-eventstream (1.2.0)
-    aws-partitions (1.614.0)
-    aws-sdk-core (3.131.6)
-      aws-eventstream (~> 1, >= 1.0.2)
-      aws-partitions (~> 1, >= 1.525.0)
-      aws-sigv4 (~> 1.1)
-      jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.58.0)
-      aws-sdk-core (~> 3, >= 3.127.0)
-      aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.46.0)
-      aws-sdk-core (~> 3, >= 3.61.1)
-      aws-sdk-kms (~> 1)
-      aws-sigv4 (~> 1.1)
-    aws-sigv4 (1.5.1)
-      aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.13)
     bindex (0.8.1)
     bootsnap (1.4.5)
@@ -177,7 +161,6 @@ GEM
       ruby-vips (>= 2.0.13, < 3)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
-    jmespath (1.6.1)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -382,7 +365,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_storage_validations (= 0.8.2)
-  aws-sdk-s3 (= 1.46.0)
   bcrypt (= 3.1.13)
   bootsnap (= 1.4.5)
   bootstrap4-kaminari-views
@@ -398,6 +380,7 @@ DEPENDENCIES
   image_processing (= 1.9.3)
   jbuilder (= 2.9.1)
   kaminari
+  launchy
   letter_opener_web
   listen
   mini_magick (= 4.9.5)
