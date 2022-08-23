@@ -6,11 +6,11 @@
     <table class="">
       <thead>
         <tr class="border-bottom border-dark">
-          <th class="p-2">タイトル</th>
-          <th class="p-2">内容</th>
-          <th class="p-2">期限</th>
+          <th class="p-2"><%= sort_link(@q, :title, "タイトル") %></th>
+          <th class="p-2"><%= sort_link(@q, :content, "内容") %></th>
+          <th class="p-2"><%= sort_link(@q, :deadline, "期限") %></th>
           <th class="p-2">ステータス</th>
-          <th class="p-2">作成日</th>
+          <th class="p-2"><%= sort_link(@q, :title, "作成日") %></th>
           <th class="p-2">担当者</th>
           <th colspan="3"></th>
         </tr>
