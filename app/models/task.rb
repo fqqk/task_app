@@ -1,7 +1,8 @@
 class Task < ApplicationRecord
+  paginates_per 6
+
   belongs_to :user
   has_many :comments, dependent: :destroy
-  paginates_per 6
   validates :title, presence: true
   validates :content, presence: true, length: { maximum: 140 }
   validates :deadline, presence: true
@@ -10,9 +11,6 @@ class Task < ApplicationRecord
   scope :latest, -> {where.not(status:"complete").order(updated_at: :desc)}
   scope :old, -> {where.not(status:"complete").order(updated_at: :asc)}
   scope :emergency, -> {where.not(status:"complete").order(deadline: :asc)}
-
-
-
 
   def send_slack
     client = Slack::Web::Client.new

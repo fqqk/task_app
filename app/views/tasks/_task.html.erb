@@ -1,5 +1,5 @@
 <div class=<%= "#{border_style(task.deadline)}" %>>
-  <p class=<%= "#{p_style(task.deadline)}" %>><%= task.title%></p>
+  <p class=<%= p_style(task.deadline) ? 'p-within-deadline' : 'p-over-deadline' %>><%= task.title%></p>
   <div class="p-3">
     <p><%= task.content%></p>
     <p>作成日: <%= task.created_at%></p>

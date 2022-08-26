@@ -1,7 +1,7 @@
 <%= form_with(model: task, local: true) do |form| %>
   <div class="form-item">
     <%= form.label :title, class:"form-label font-weight-bold" %>
-    <%= form.text_field :title,class:"form-control" %>
+    <%= form.text_field :title, class:"form-control" %>
   </div>
 
   <div class="form-item">
@@ -15,14 +15,15 @@
   </div>
 
   <div class="form-item">
+    <%# この一番上のlabelは何のためにあるのでしょうか %>
     <%= form.label :status, class:"form-label font-weight-bold" %>
-    <%= form.label "未対応", class:"form-label" %>
-    <%= form.radio_button :status, "incomplete" %>
-    <%= form.label "対応中", class:"form-label" %>
-    <%= form.radio_button :status, "doing" %>
+    <%= form.label "未対応", :status, class:"form-label" %>
+    <%= form.radio_button :status, :incomplete %>
+    <%= form.label "対応中", :status, class:"form-label" %>
+    <%= form.radio_button :status, :doing %>
     <% if action_name == "edit"%>
-      <%= form.label "完了", class:"form-label" %>
-      <%= form.radio_button :status, "complete" %>
+      <%= form.label "完了", :status, class:"form-label" %>
+      <%= form.radio_button :status, :complete %>
     <% end %>
   </div>
 

@@ -9,7 +9,7 @@
       <p>新しくアサインするユーザー</p>
       <%= form_with(model: @tasks, url: update_assign_task_path, local: false, method: :patch) do |form| %>
         <div class="select">
-          <%= form.select :user_id, options_for_select(@users.map{|user| [user.name, user.id]}), { include_blank: '選択してください'}, {class: 'form-control'} %>
+          <%= form.collection_select(:user_id, @users, :id, :name, {include_blank: '選択してください'}, {class: "form-control"})%>
         </div>
         <div class="float-right">
           <%= form.submit 'アサインする', class:"btn btn-success"%>

@@ -2,6 +2,7 @@ ja:
   tasks:
     create:
       notice: "新しいタスクを登録しました！"
+        create_comment_success
       alert: "入力項目に誤りがあります。"
     update:
       notice: "タスクの更新に成功しました。"
@@ -24,3 +25,6 @@ ja:
     destroy:
       notice: "コメントを削除しました"
       alert: "コメントの削除に失敗しました"
+
+# ファイル名をcontroller.ja.ymlから変更
+# actioinで分けると汎用性がないため。

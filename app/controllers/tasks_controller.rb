@@ -1,10 +1,13 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[show edit update destroy assign update_assign]
-  before_action :is_authorized_user?, only: %i[ edit update destroy assign update_assign]
+  before_action :set_task, only: %i[show]
+  before_action :set_my_task, only: %i[ edit update destroy assign update_assign]
   before_action :authenticate_user!
   before_action :set_q, only: [ :index, :search, :mypage ]
 
   def index
+    # 口頭確認 ransackを使って実装できないか
+    # includeやpreloadなどを使ってuserもまとめて取っておいた方がいいです。
+    # view側でsql発行すると処理が遅くなってしまうので。
     if params[:new]
       @tasks = Task.latest.page(params[:page])
     elsif params[:old]
@@ -12,7 +15,8 @@ class TasksController < ApplicationController
     elsif params[:emergency]
       @tasks = Task.emergency.page(params[:page])
     else
-     @tasks = Task.where.not(status:"complete").page(params[:page])
+      # 基本シングルクォーテーション
+     @tasks = Task.where.not(status: 'complete').page(params[:page])
     end
   end
 
@@ -24,7 +28,7 @@ class TasksController < ApplicationController
     elsif params[:emergency]
       @mytasks = current_user.tasks.emergency.page(params[:page])
     else
-      @mytasks = current_user.tasks.where.not(status: "complete").page(params[:page])
+      @mytasks = current_user.tasks.where.not(status: 'complete').page(params[:page])
     end
   end
 
@@ -33,8 +37,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
-    @task.user_id = current_user.id
+    @task = current_user.tasks.build(task_params)
     if @task.save
       @task.send_slack
       redirect_to task_url(@task), notice: t(".notice")
@@ -45,18 +48,19 @@ class TasksController < ApplicationController
 
   def show
     @comment = Comment.new
+    # ここだけ５件表示にしている理由を教えてください。
     @comments = @task.comments.reverse_order.page(params[:page]).per(5)
   end
 
   def edit
   end
 
-  def assign
+  def edit_assign
     @users = User.all
   end
 
   def update_assign
-    if @task.update(user_id:params[:task][:user_id])
+    if @task.update(user_id: params[:task][:user_id])
       redirect_to task_url(@task), notice: t(".notice")
     else
       redirect_to tasks_url, alert: t(".alert")
@@ -97,8 +101,8 @@ class TasksController < ApplicationController
     params.require(:task).permit(:title, :content, :deadline, :status)
   end
 
-  def is_authorized_user?
-    @tasks = current_user.tasks
-    redirect_to tasks_url, alert: t(".alert") unless @tasks.exists?(id: params[:id])
+  def set_mytask
+    @task = current_user.tasks.find(params[:id])
+    redirect_to tasks_url, alert: t(".alert") unless @task
   end
 end

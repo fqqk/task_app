@@ -6,21 +6,22 @@ class CommentsController < ApplicationController
     @comment = current_user.comments.new(comment_params)
     if @comment.save
       redirect_back fallback_location: root_path, notice: t(".notice")
+      # _urlか_pathか統一をお願いします。
+      # t(".notice")だと分かり辛いので、t('notice.comment_create_success')のような形で呼び出せるように修正
+      # 以下のnoticeやalertも同様
     else
       @comments = @task.comments.reverse_order.page(params[:page])
       redirect_to task_url(@task), alert: t(".alert")
     end
   end
 
-  def edit
-  end
-
+  def edit; end
 
   def update
     if @comment.update(comment_params)
-      redirect_to task_url(@comment.task_id), notice: t(".notice")
+      redirect_to task_url(@comment), notice: t(".notice")
     else
-      redirect_to task_url(@comment.task_id), alert: t(".alert")
+      redirect_to task_url(@comment), alert: t(".alert")
     end
   end
 
@@ -39,7 +40,9 @@ class CommentsController < ApplicationController
   end
 
   def set_comment
-    @comment = Comment.find_by(id:params[:id], task_id: params[:task_id])
+    @comment = Comment.find(id: params[:id], task_id: params[:task_id])
+    #find_byだとエラーをハンドリングしてくれるがfindだと該当のidがない場合にエラー発生
+    #今回の場合はエラーを出してあげていいと思います。
   end
 
   def comment_params

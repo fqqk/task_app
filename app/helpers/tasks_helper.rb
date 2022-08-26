@@ -17,14 +17,13 @@ module TasksHelper
     end
   end
 
+  # class名をhelperでreturnさせるのはあまり良くないので、下記ような感じの方がいいかと思います
+  # メソッド名は変更しておいて下さい。
   def p_style(deadline)
-    if deadline > DateTime.now
-      "p-within-deadline"
-    else
-      "p-over-deadline"
-    end
+    deadline > DateTime.now
   end
 
+  #こちらも上記同様
   def border_style(deadline)
     if deadline > DateTime.now
       "border-within-deadline"
