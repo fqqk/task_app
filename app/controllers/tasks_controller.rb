@@ -5,15 +5,8 @@ class TasksController < ApplicationController
   before_action :set_q, only: [ :index, :search, :mypage ]
 
   def index
-    if params[:new]
-      @tasks = Task.latest.page(params[:page])
-    elsif params[:old]
-      @tasks = Task.old.page(params[:page])
-    elsif params[:emergency]
-      @tasks = Task.emergency.page(params[:page])
-    else
-     @tasks = Task.where.not(status:"complete").page(params[:page])
-    end
+    @tasks = Task.where.not(status:"complete").page(params[:page])
+    gon.tasks = Task.all.preload(:user)
   end
 
   def mypage
@@ -37,9 +30,9 @@ class TasksController < ApplicationController
     @task.user_id = current_user.id
     if @task.save
       @task.send_slack
-      redirect_to task_url(@task), notice: t(".notice")
+      redirect_to task_url(@task), notice: t(".create_comment_success")
     else
-      redirect_to new_task_url, alert: t(".alert")
+      redirect_to new_task_url, alert: t(".create_comment_failure")
     end
   end
 
@@ -57,25 +50,25 @@ class TasksController < ApplicationController
 
   def update_assign
     if @task.update(user_id:params[:task][:user_id])
-      redirect_to task_url(@task), notice: t(".notice")
+      redirect_to task_url(@task), notice: t(".update_assign_comment_success")
     else
-      redirect_to tasks_url, alert: t(".alert")
+      redirect_to tasks_url, alert: t(".update_assign_comment_failure")
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to task_url(@task), notice: t(".notice")
+      redirect_to task_url(@task), notice: t(".update_comment_success")
     else
-      redirect_to task_url(@task), alert: t(".alert")
+      redirect_to task_url(@task), alert: t(".update_comment_failure")
     end
   end
 
   def destroy
     if @task.destroy
-      redirect_to tasks_url, notice: t(".notice")
+      redirect_to tasks_url, notice: t(".destory_comment_success")
     else
-      redirect_to tasks_url, alert: t(".alert")
+      redirect_to tasks_url, alert: t(".destroy_comment_failure")
     end
   end
 
