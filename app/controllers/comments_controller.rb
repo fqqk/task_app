@@ -38,7 +38,7 @@ class CommentsController < ApplicationController
   end
 
   def set_comment
-    @comment = Comment.find_by(id:params[:id], task_id: params[:task_id])
+    @comment = Comment.find(id:params[:id], task_id: params[:task_id])
   end
 
   def comment_params
