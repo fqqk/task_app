@@ -41,8 +41,7 @@ class TasksController < ApplicationController
     @comments = @task.comments.reverse_order.page(params[:page]).per(5)
   end
 
-  def edit
-  end
+  def edit;end
 
   def assign
     @users = User.all
