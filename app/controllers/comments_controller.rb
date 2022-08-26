@@ -17,9 +17,9 @@ class CommentsController < ApplicationController
 
   def update
     if @comment.update(comment_params)
-      redirect_to task_url(@comment.task_id), notice: t('.update_comment_success')
+      redirect_to task_url(@comment), notice: t('.update_comment_success')
     else
-      redirect_to task_url(@comment.task_id), alert: t('.update_comment_failure')
+      redirect_to task_url(@comment), alert: t('.update_comment_failure')
     end
   end
 
