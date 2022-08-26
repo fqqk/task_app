@@ -5,10 +5,10 @@ class CommentsController < ApplicationController
   def create
     @comment = current_user.comments.new(comment_params)
     if @comment.save
-      redirect_back fallback_location: root_url, notice: t(".create_comment_success")
+      redirect_back fallback_location: root_url, notice: t('.create_comment_success')
     else
       @comments = @task.comments.reverse_order.page(params[:page])
-      redirect_to task_url(@task), alert: t(".create_comment_failure")
+      redirect_to task_url(@task), alert: t('.create_comment_failure')
     end
   end
 
@@ -18,17 +18,17 @@ class CommentsController < ApplicationController
 
   def update
     if @comment.update(comment_params)
-      redirect_to task_url(@comment.task_id), notice: t(".update_comment_success")
+      redirect_to task_url(@comment.task_id), notice: t('.update_comment_success')
     else
-      redirect_to task_url(@comment.task_id), alert: t(".update_comment_failure")
+      redirect_to task_url(@comment.task_id), alert: t('.update_comment_failure')
     end
   end
 
   def destroy
     if @comment.destroy
-      redirect_to task_url(@task), notice: t(".destroy_comment_success")
+      redirect_to task_url(@task), notice: t('.destroy_comment_success')
     else
-      redirect_to task_url(@task), notice: t(".destroy_comment_failure")
+      redirect_to task_url(@task), notice: t('.destroy_comment_failure')
     end
   end
 
