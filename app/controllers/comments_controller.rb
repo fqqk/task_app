@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
   def create
     @comment = current_user.comments.new(comment_params)
     if @comment.save
-      redirect_back fallback_location: root_path, notice: t(".notice")
+      redirect_back fallback_location: root_url, notice: t(".notice")
     else
       @comments = @task.comments.reverse_order.page(params[:page])
       redirect_to task_url(@task), alert: t(".alert")
