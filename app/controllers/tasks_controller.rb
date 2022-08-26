@@ -5,7 +5,7 @@ class TasksController < ApplicationController
   before_action :set_q, only: [ :index, :search, :mypage ]
 
   def index
-    @tasks = Task.where.not(status:"complete").page(params[:page])
+    @tasks = Task.where.not(status:'complete').page(params[:page])
     gon.tasks = Task.all.preload(:user)
   end
 
@@ -17,7 +17,7 @@ class TasksController < ApplicationController
     elsif params[:emergency]
       @mytasks = current_user.tasks.emergency.page(params[:page])
     else
-      @mytasks = current_user.tasks.where.not(status: "complete").page(params[:page])
+      @mytasks = current_user.tasks.where.not(status: 'complete').page(params[:page])
     end
   end
 
@@ -30,9 +30,9 @@ class TasksController < ApplicationController
     @task.user_id = current_user.id
     if @task.save
       @task.send_slack
-      redirect_to task_url(@task), notice: t(".create_comment_success")
+      redirect_to task_url(@task), notice: t('.create_comment_success')
     else
-      redirect_to new_task_url, alert: t(".create_comment_failure")
+      redirect_to new_task_url, alert: t('.create_comment_failure')
     end
   end
 
@@ -50,25 +50,25 @@ class TasksController < ApplicationController
 
   def update_assign
     if @task.update(user_id:params[:task][:user_id])
-      redirect_to task_url(@task), notice: t(".update_assign_comment_success")
+      redirect_to task_url(@task), notice: t('.update_assign_comment_success')
     else
-      redirect_to tasks_url, alert: t(".update_assign_comment_failure")
+      redirect_to tasks_url, alert: t('.update_assign_comment_failure')
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to task_url(@task), notice: t(".update_comment_success")
+      redirect_to task_url(@task), notice: t('.update_comment_success')
     else
-      redirect_to task_url(@task), alert: t(".update_comment_failure")
+      redirect_to task_url(@task), alert: t('.update_comment_failure')
     end
   end
 
   def destroy
     if @task.destroy
-      redirect_to tasks_url, notice: t(".destory_comment_success")
+      redirect_to tasks_url, notice: t('.destory_comment_success')
     else
-      redirect_to tasks_url, alert: t(".destroy_comment_failure")
+      redirect_to tasks_url, alert: t('.destroy_comment_failure')
     end
   end
 
@@ -92,6 +92,6 @@ class TasksController < ApplicationController
 
   def is_authorized_user?
     @tasks = current_user.tasks
-    redirect_to tasks_url, alert: t(".alert") unless @tasks.exists?(id: params[:id])
+    redirect_to tasks_url, alert: t('.alert') unless @tasks.exists?(id: params[:id])
   end
 end
