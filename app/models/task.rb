@@ -7,13 +7,6 @@ class Task < ApplicationRecord
   validates :deadline, presence: true
   validates :status, presence: true
 
-  scope :latest, -> {where.not(status:"complete").order(updated_at: :desc)}
-  scope :old, -> {where.not(status:"complete").order(updated_at: :asc)}
-  scope :emergency, -> {where.not(status:"complete").order(deadline: :asc)}
-
-
-
-
   def send_slack
     client = Slack::Web::Client.new
     client.chat_postMessage(
