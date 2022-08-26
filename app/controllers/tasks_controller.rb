@@ -26,8 +26,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
-    @task.user_id = current_user.id
+    @task = current_user.tasks.build(task_params)
     if @task.save
       @task.send_slack
       redirect_to task_url(@task), notice: t('.create_comment_success')
@@ -38,7 +37,7 @@ class TasksController < ApplicationController
 
   def show
     @comment = Comment.new
-    @comments = @task.comments.reverse_order.page(params[:page]).per(5)
+    @comments = @task.comments.reverse_order.page(params[:page])
   end
 
   def edit;end
