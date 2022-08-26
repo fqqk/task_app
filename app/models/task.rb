@@ -1,7 +1,7 @@
 class Task < ApplicationRecord
+  paginates_per 6
   belongs_to :user
   has_many :comments, dependent: :destroy
-  paginates_per 6
   validates :title, presence: true
   validates :content, presence: true, length: { maximum: 140 }
   validates :deadline, presence: true
