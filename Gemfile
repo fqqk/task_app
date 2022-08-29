@@ -22,6 +22,7 @@ gem 'bootstrap4-kaminari-views'
 gem 'dotenv-rails'
 gem 'slack-ruby-client'
 gem 'ransack'
+gem 'gon'
 
 group :development, :test do
   gem 'pg'
