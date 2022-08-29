@@ -29,9 +29,9 @@ class TasksController < ApplicationController
     @task = current_user.tasks.build(task_params)
     if @task.save
       @task.send_slack
-      redirect_to task_url(@task), notice: t('.notice.task_create_success')
+      redirect_to task_url(@task), notice: t('notice.task_create_success')
     else
-      redirect_to new_task_url, alert: t('.alert.task_create_failure')
+      redirect_to new_task_url, alert: t('alert.task_create_failure')
     end
   end
 
@@ -48,25 +48,25 @@ class TasksController < ApplicationController
 
   def update_assign
     if @task.update(user_id: params[:user_id])
-      redirect_to task_url(@task), notice: t('.notice.update_assign_comment_success')
+      redirect_to task_url(@task), notice: t('notice.task_update_assign_success')
     else
-      redirect_to tasks_url, alert: t('.alert.update_assign_comment_failure')
+      redirect_to tasks_url, alert: t('alert.task_update_assign_failure')
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to task_url(@task), notice: t('.notice.task_update_success')
+      redirect_to task_url(@task), notice: t('notice.task_update_success')
     else
-      redirect_to task_url(@task), alert: t('.alert.task_update_failure')
+      redirect_to task_url(@task), alert: t('alert.task_update_failure')
     end
   end
 
   def destroy
     if @task.destroy
-      redirect_to tasks_url, notice: t('.notice.task_destroy_success')
+      redirect_to tasks_url, notice: t('notice.task_destroy_success')
     else
-      redirect_to tasks_url, alert: t('.alert.task_destroy_failure')
+      redirect_to tasks_url, alert: t('alert.task_destroy_failure')
     end
   end
 
@@ -90,6 +90,6 @@ class TasksController < ApplicationController
 
   def set_mytask
     @task = current_user.tasks.find(params[:id])
-    redirect_to tasks_url, alert: t(".alert.authorize_invalid") unless @task
+    redirect_to tasks_url, alert: t("alert.authorize_invalid") unless @task
   end
 end
