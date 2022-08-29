@@ -1,8 +1,8 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[show edit update destroy assign update_assign]
-  before_action :is_authorized_user?, only: %i[ edit update destroy assign update_assign]
+  before_action :set_task, only: %i[show]
+  before_action :set_mytask, only: %i[edit update destroy update_assign edit_assign]
   before_action :authenticate_user!
-  before_action :set_q, only: [ :index, :search, :mypage ]
+  before_action :set_q, only: %i[index search mypage]
 
   def index
     @tasks = Task.where.not(status:'complete').page(params[:page])
@@ -29,9 +29,9 @@ class TasksController < ApplicationController
     @task = current_user.tasks.build(task_params)
     if @task.save
       @task.send_slack
-      redirect_to task_url(@task), notice: t('.create_comment_success')
+      redirect_to task_url(@task), notice: t('.notice.task_create_success')
     else
-      redirect_to new_task_url, alert: t('.create_comment_failure')
+      redirect_to new_task_url, alert: t('.alert.task_create_failure')
     end
   end
 
@@ -42,31 +42,31 @@ class TasksController < ApplicationController
 
   def edit;end
 
-  def assign
+  def edit_assign
     @users = User.all
   end
 
   def update_assign
-    if @task.update(user_id:params[:task][:user_id])
-      redirect_to task_url(@task), notice: t('.update_assign_comment_success')
+    if @task.update(user_id: params[:user_id])
+      redirect_to task_url(@task), notice: t('.notice.update_assign_comment_success')
     else
-      redirect_to tasks_url, alert: t('.update_assign_comment_failure')
+      redirect_to tasks_url, alert: t('.alert.update_assign_comment_failure')
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to task_url(@task), notice: t('.update_comment_success')
+      redirect_to task_url(@task), notice: t('.notice.task_update_success')
     else
-      redirect_to task_url(@task), alert: t('.update_comment_failure')
+      redirect_to task_url(@task), alert: t('.alert.task_update_failure')
     end
   end
 
   def destroy
     if @task.destroy
-      redirect_to tasks_url, notice: t('.destory_comment_success')
+      redirect_to tasks_url, notice: t('.notice.task_destroy_success')
     else
-      redirect_to tasks_url, alert: t('.destroy_comment_failure')
+      redirect_to tasks_url, alert: t('.alert.task_destroy_failure')
     end
   end
 
@@ -88,8 +88,8 @@ class TasksController < ApplicationController
     params.require(:task).permit(:title, :content, :deadline, :status)
   end
 
-  def is_authorized_user?
-    @tasks = current_user.tasks
-    redirect_to tasks_url, alert: t('.alert') unless @tasks.exists?(id: params[:id])
+  def set_mytask
+    @task = current_user.tasks.find(params[:id])
+    redirect_to tasks_url, alert: t(".alert.authorize_invalid") unless @task
   end
 end
