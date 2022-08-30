@@ -1,33 +1,37 @@
 <%= javascript_pack_tag 'tasks/index', 'data-turbolinks-track': 'reload' %>
 
 <div class='container'>
-  <div class='d-flex justify-content-between align-items-center mb-5'>
     <h1 class='fw-bold'>タスク一覧</h1>
-      <form id='target'>
-        <label for='title'>タイトル</label>
+    <div class='d-flex justify-content-between align-items-center my-5'>
+      <div id='target'>
+        <label class="font-weight-bold">【検索項目】</label>
+        <label for='title' class="font-weight-bold">タイトル</label>
         <input name='item' type='radio' value='title' id='title' />
-        <label for='user'>担当者</label>
+        <label for='user' class="font-weight-bold">担当者</label>
         <input name='item' type='radio' value='user' id='user'>
-        <label for='content'>内容</label>
+        <label for='content' class="font-weight-bold">内容</label>
         <input name='item' type='radio' value='content' id='content'>
-      </form>
-    <div class='d-flex align-items-center'>
-      <div id='search-box'></div>
-        <select name='none' id='search-select' class='form-control'>
-          <% @tasks.each do |task| %>
-            <option value=<%= task.id %>><%= task.id %>:<%= task.title %></option>
-          <% end %>
-        </select>
+        <div>
+          <label class="font-weight-bold">【並べ替え】</label>
+          <label for='content' class="font-weight-bold mr-4"><%= sort_link(@q, :created_at, "作成日") %></label>
+          <label for='content' class="font-weight-bold"><%= sort_link(@q, :deadline, "期限") %></label>
+        </div>
+      </div>
+
+
+      <%= search_form_for(@q,class:'w-50 d-flex align-items-center', local: true) do |f| %>
+        <%= f.select :id_eq, options_from_collection_for_select(@task_all, :id ,:title) ,{},  class: 'form-control search-select mr-2' %>
+        <%= f.button '検索', class:"btn btn-primary w-25" %>
+      <% end %>
     </div>
-  </div>
   <div class='row row-col'>
-    <% @tasks.each do |task| %>
+    <% @results.each do |task| %>
     <div class='d-flex flex-column col-xs-1 col-lg-6 mb-3'>
       <%= render task %>
     </div>
     <% end %>
   </div>
   <div class='d-flex fs-5 justify-content-center mt-5'>
-     <%= paginate @tasks, theme: 'twitter-bootstrap-4' %>
+     <%= paginate @results, theme: 'twitter-bootstrap-4' %>
   </div>
 </div>
