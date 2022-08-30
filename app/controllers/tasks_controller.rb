@@ -2,23 +2,18 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[show]
   before_action :set_mytask, only: %i[edit update destroy update_assign edit_assign]
   before_action :authenticate_user!
-  before_action :set_q, only: %i[index search mypage]
+  before_action :set_q, only: %i[index mypage]
 
   def index
-    @tasks = Task.where.not(status:'complete').page(params[:page])
-    gon.tasks = Task.all.preload(:user)
+    @task_all = Task.all.preload(:user)
+    gon.tasks = @task_all.as_json(:include => {:user => {:only => [:name]}})
+    @results = @q.result.where.not(status: 'complete').page(params[:page])
   end
 
   def mypage
-    if params[:new]
-      @mytasks = current_user.tasks.latest.page(params[:page])
-    elsif params[:old]
-      @mytasks = current_user.tasks.old.page(params[:page])
-    elsif params[:emergency]
-      @mytasks = current_user.tasks.emergency.page(params[:page])
-    else
-      @mytasks = current_user.tasks.where.not(status: 'complete').page(params[:page])
-    end
+    @task_all = current_user.tasks.where.not(status: 'complete')
+    gon.tasks = @task_all
+    @results = @q.result.where(user_id: current_user.id).where.not(status: 'complete').page(params[:page])
   end
 
   def new
@@ -68,10 +63,6 @@ class TasksController < ApplicationController
     else
       redirect_to tasks_url, alert: t('alert.task_destroy_failure')
     end
-  end
-
-  def search
-    @results = @q.result
   end
 
   private
