@@ -5,7 +5,6 @@ Rails.application.routes.draw do
     patch :update_assign, on: :member
     get :mypage, on: :collection
     resources :comments, only:[:create, :destroy, :update, :edit]
-    get :search, on: :collection
   end
   devise_for :users
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
