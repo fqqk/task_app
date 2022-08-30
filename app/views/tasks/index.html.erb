@@ -6,7 +6,7 @@
       <div id='target'>
         <label class="font-weight-bold">【検索項目】</label>
         <label for='title' class="font-weight-bold">タイトル</label>
-        <input name='item' type='radio' value='title' id='title' />
+        <input name='item' type='radio' value='title' id='title' checked/>
         <label for='user' class="font-weight-bold">担当者</label>
         <input name='item' type='radio' value='user' id='user'>
         <label for='content' class="font-weight-bold">内容</label>
@@ -20,7 +20,7 @@
 
 
       <%= search_form_for(@q,class:'w-50 d-flex align-items-center', local: true) do |f| %>
-        <%= f.select :id_eq, options_from_collection_for_select(@task_all, :id ,:title) ,{},  class: 'form-control search-select mr-2' %>
+        <%= f.select :id_eq, options_from_collection_for_select(@tasks, :id ,:title) ,{},  class: 'form-control search-select mr-2' %>
         <%= f.button '検索', class:"btn btn-primary w-25" %>
       <% end %>
     </div>
