@@ -64,6 +64,6 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 8080 }
   config.action_mailer.delivery_method = :letter_opener_web
 
-  #docker compose up時にrailsアプリのログを出力
-  # config.logger = Logger.new(STDOUT)
+  #ngrokのアクセスを許可
+  config.hosts << '.ngrok.io'
 end
