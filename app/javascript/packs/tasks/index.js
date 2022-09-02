@@ -1,4 +1,3 @@
-// 初回リロード時のみ
 window.addEventListener('DOMContentLoaded', function() {
   let radio_btns = document.querySelectorAll(`input[type='radio'][name='item']`);
   for (let target of radio_btns) {
@@ -6,24 +5,7 @@ window.addEventListener('DOMContentLoaded', function() {
       itemSelect(target);
     });
   };
-  console.log("初回リロード時");
 });
-
-// 初回以降
-(function() {
-  targetElement()
-  console.log("初回以降");
-}());
-
-function targetElement() {
-  let radio_btns = document.querySelectorAll(`input[type='radio'][name='item']`);
-  console.log(radio_btns);
-  for (let target of radio_btns) {
-    target.addEventListener('change', function () {
-      itemSelect(target);
-    });
-  };
-}
 
 function itemSelect(target) {
   let value = target.value;
@@ -32,22 +14,33 @@ function itemSelect(target) {
   } else {
     console.log("no value");
   }
-  console.log("itemselect");
+}
+
+function addOptionList(value,q_name,q_id,gons) {
+  const select = document.querySelector("select");
+  select.removeAttribute('name');
+  select.removeAttribute('id');
+  select.setAttribute('name',q_name);
+  select.setAttribute('id',q_id);
+  const rm_target_user = document.querySelectorAll("option");
+  rm_target_user.forEach((target) => target.remove());
+  for(const gon of gons){
+      const option = document.createElement('option');
+      option.value = gon.id;
+      option.innerHTML = gon[value];
+      select.appendChild(option);
+  }
 }
 
 function changeOptionInnerHTML(value) {
-  tasks = gon.tasks;
-  console.log("changeOptionのgon.tasks", tasks);
-  const select = document.getElementById("q_id_eq");
-  const options = select.options;
-  for( i = 0; i < options.length; i++ ){
-    const option = options[i];
-    if(value == "title") {
-      option.innerHTML = tasks[i].title;
-    } else if(value == "content") {
-      option.innerHTML = tasks[i].content;
-    } else {
-      option.innerHTML = tasks[i].user.name;
-    }
+  const tasks = gon.tasks;
+  const users = gon.users;
+
+  if(value == 'title') {
+    addOptionList(value,'q[id_eq]','q_id_eq',tasks);
+  } else if(value == 'content') {
+    addOptionList(value,'q[id_eq]','q_id_eq',tasks);
+  } else {
+    addOptionList(value,'q[user_id_eq]','q_user_id_eq',users);
   }
 }
