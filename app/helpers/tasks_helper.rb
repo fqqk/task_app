@@ -18,6 +18,6 @@ module TasksHelper
   end
 
   def now_is_within_deadline?(deadline)
-    deadline > DateTime.now
+    deadline > Time.now
   end
 end
