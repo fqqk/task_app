@@ -5,15 +5,16 @@ class TasksController < ApplicationController
   before_action :set_q, only: %i[index mypage]
 
   def index
-    @tasks = Task.where.not(status: 'complete').preload(:user)
-    @results = @q.result.where.not(status: 'complete').page(params[:page])
+    @tasks = Task.incomplete.preload(:user)
+    @results = @q.result.incomplete.page(params[:page])
     gon.tasks = @tasks.as_json(:include => {:user => {:only => [:name]}})
+    gon.users = User.all.select(:id, :name)
   end
 
   def mypage
-    @tasks = current_user.tasks.where.not(status: 'complete')
+    @tasks = current_user.tasks.incomplete
     gon.tasks = @tasks
-    @results = @q.result.where(user_id: current_user.id).where.not(status: 'complete').page(params[:page])
+    @results = @q.result.where(user_id: current_user.id).incomplete.page(params[:page])
   end
 
   def new
