@@ -7,6 +7,10 @@ class Task < ApplicationRecord
   validates :deadline, presence: true
   validates :status, presence: true
 
+  scope :incomplete, -> (status = ['doing', 'incomplete']) {
+    where(status: status)
+  }
+
   def send_slack
     client = Slack::Web::Client.new
     client.chat_postMessage(
