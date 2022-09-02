@@ -1,4 +1,4 @@
-<%= javascript_pack_tag 'tasks/index', 'data-turbolinks-track': 'reload' %>
+<%= javascript_pack_tag 'tasks/index' %>
 
 <div class="container">
   <h1 class="fw-bold">マイタスク</h1>
@@ -25,9 +25,9 @@
   <%= link_to "New Task", new_task_path, class:"btn btn-outline-dark" %>
 
   <div class="row row-col">
-    <% @results.each do |mytask| %>
+    <% @results.each do |task| %>
     <div class="d-flex flex-column col-xs-1 col-lg-6 mb-3">
-      <%= render mytask %>
+      <%= render task %>
     </div>
     <% end %>
   </div>
