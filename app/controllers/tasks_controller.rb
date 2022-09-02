@@ -33,7 +33,7 @@ class TasksController < ApplicationController
 
   def show
     @comment = Comment.new
-    @comments = @task.comments.reverse_order.page(params[:page])
+    @comments = @task.comments.reverse_order.preload(:user).page(params[:page])
   end
 
   def edit;end
