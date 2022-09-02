@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     @tasks = Task.incomplete.preload(:user)
     @results = @q.result.incomplete.page(params[:page])
     gon.tasks = @tasks.as_json(:include => {:user => {:only => [:name]}})
-    gon.users = User.all.select(:id, :name)
+    gon.users = User.select(:id, :name)
   end
 
   def mypage
@@ -69,7 +69,7 @@ class TasksController < ApplicationController
   private
 
   def set_q
-    @q = Task.ransack(params[:q])
+    @q = Task.eager_load(:user).ransack(params[:q])
   end
 
   def set_task
