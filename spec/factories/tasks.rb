@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :task do
     sequence(:title) { |n| "Task#{n}"}
     content { "テストタスクです" }
-    deadline { 1.week.from.now }
+    deadline { Time.current.since(7.days) }
     status { "doing" }
-    association :owner
+    association :user
   end
 end
