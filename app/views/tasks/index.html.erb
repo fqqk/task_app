@@ -18,15 +18,14 @@
         </div>
       </div>
 
-
       <%= search_form_for(@q,class:'w-50 d-flex align-items-center', local: true) do |f| %>
         <%= f.select :id_eq, options_from_collection_for_select(@tasks, :id ,:title) ,{include_blank: "選択してください"},  class: 'form-control search-select mr-2' %>
         <%= f.button '検索', class:"btn btn-primary w-25" %>
       <% end %>
     </div>
-  <div class='row row-col'>
+  <div class='row'>
     <% @results.each do |task| %>
-    <div class='d-flex flex-column col-xs-1 col-lg-6 mb-3'>
+    <div class='col-xs-12 col-md-6 mb-3'>
       <%= render task %>
     </div>
     <% end %>
