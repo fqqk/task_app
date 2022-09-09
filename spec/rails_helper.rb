@@ -62,6 +62,9 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  #FactoryBotのメソッドを使用する際に、名前空間を指定する必要がなくなる
+  # Devise のヘルパーメソッドをrequests内で使用する
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include RequestSpecHelper, type: :request
+  # FactoryBotのメソッドを使用する際に、名前空間を指定する必要がなくなる
   config.include FactoryBot::Syntax::Methods
 end
