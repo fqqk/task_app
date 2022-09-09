@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_task, only: %i[show]
   before_action :set_mytask, only: %i[edit update destroy update_assign edit_assign]
-  before_action :authenticate_user!
   before_action :set_q, only: %i[index mypage]
 
   def index
@@ -81,7 +81,7 @@ class TasksController < ApplicationController
   end
 
   def set_mytask
-    @task = current_user.tasks.find(params[:id])
+    @task = current_user.tasks.find_by(id: params[:id])
     redirect_to tasks_url, alert: t("alert.authorize_invalid") unless @task
   end
 end
