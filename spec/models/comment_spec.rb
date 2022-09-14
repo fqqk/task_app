@@ -9,7 +9,13 @@ RSpec.describe Comment, type: :model do
     it "commentがなければ登録できないこと" do
       comment = build(:comment, comment: nil)
       comment.valid?
-      expect(comment.errors[:comment].to_sentence).to include("Userを入力してください、Commentを入力してください")
+      expect(comment.errors.full_messages).to include("Commentを入力してください")
+    end
+
+    it "commentが140文字以上であれば登録できないこと" do
+      comment = build(:comment, comment: 'a'*141)
+      comment.valid?
+      expect(comment.errors[:comment]).to include("は140文字以内で入力してください")
     end
   end
 end
