@@ -9,7 +9,7 @@ RSpec.describe Comment, type: :model do
     it "commentがなければ登録できないこと" do
       comment = build(:comment, comment: nil)
       comment.valid?
-      expect(comment.errors[:comment]).to include("を入力してください")
+      expect(comment.errors[:comment].to_sentence).to include("Userを入力してください、Commentを入力してください")
     end
   end
 end
