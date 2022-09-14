@@ -1,14 +1,14 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: %i[edit update destroy]
-  before_action :set_task, only: %i[create destroy edit]
+  before_action :set_task, only: %i[create destroy edit update]
 
   def create
     @comment = current_user.comments.new(comment_params)
     if @comment.save
       redirect_back fallback_location: root_url, notice: t('notice.comment_create_success')
     else
-      @comments = @task.comments.reverse_order.page(params[:page])
-      redirect_to task_url(@task), alert: t('alert.comment_create_failure')
+      flash[:alert] = t('alert.comment_create_failure')
+      redirect_back fallback_location: root_path
     end
   end
 
@@ -17,9 +17,11 @@ class CommentsController < ApplicationController
 
   def update
     if @comment.update(comment_params)
-      redirect_to task_url(@comment), notice: t('notice.comment_update_success')
+      flash[:notice] = t('notice.comment_update_success')
+      redirect_to task_url(@task)
     else
-      redirect_to task_url(@comment), alert: t('alert.comment_update_failure')
+      flash[:alert] = t('alert.comment_update_failure')
+      render :edit
     end
   end
 
@@ -27,7 +29,8 @@ class CommentsController < ApplicationController
     if @comment.destroy
       redirect_to task_url(@task), notice: t('notice.comment_destroy_success')
     else
-      redirect_to task_url(@task), notice: t('alert.comment_destroy_failure')
+      flash.now[:alert] = t('alert.comment_destroy_failure')
+      redirect_back fallback_location: root_path
     end
   end
 
@@ -38,7 +41,7 @@ class CommentsController < ApplicationController
   end
 
   def set_comment
-    @comment = Comment.find(id: params[:id], task_id: params[:task_id])
+    @comment = current_user.comments.find_by(id: params[:id], task_id: params[:task_id])
   end
 
   def comment_params
