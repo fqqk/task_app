@@ -6,10 +6,15 @@ class Task < ApplicationRecord
   validates :content, presence: true, length: { maximum: 140 }
   validates :deadline, presence: true
   validates :status, presence: true
+  validate :date_after_today?
 
   scope :incomplete, -> (status = ['doing', 'incomplete']) {
     where(status: status)
   }
+
+  def date_after_today?
+    errors.add(:deadline, "は現在以降のものを選択してください") if deadline < Time.zone.now
+  end
 
   def send_slack
     client = Slack::Web::Client.new
