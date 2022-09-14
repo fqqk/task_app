@@ -18,10 +18,22 @@ RSpec.describe Task, type: :model do
       expect(task.errors[:content]).to include("を入力してください")
     end
 
+    it "contentが140文字以上であれば登録できないこと" do
+      task = build(:task, content: 'a'*141)
+      task.valid?
+      expect(task.errors[:content]).to include("は140文字以内で入力してください")
+    end
+
     it "deadlineがなければ登録できないこと" do
       task = build(:task, deadline: nil)
       task.valid?
       expect(task.errors[:deadline]).to include("を入力してください")
+    end
+
+    it "deadlineが現在以降でなければ登録できないこと" do
+      task = build(:task, deadline: Time.zone.now.prev_year)
+      task.valid?
+      expect(task.errors[:deadline]).to include("は現在以降のものを選択してください")
     end
 
     it "statusがなければ登録できないこと" do
