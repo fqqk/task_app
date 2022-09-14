@@ -13,12 +13,12 @@
   </div>
 </div>
     <%# コメント送る部分 %>
-  <div class="mx-auto my-5 w-75">
-  <div class="mx-auto w-75 mb-3">
-    <%= form_with(model: [@task, @comment], local: true) do |f| %>
-      <%= f.text_area :comment, :size=>"60x3",placeholder: "コメントする" %>
+  <div class="mx-auto my-5 mw-75">
+  <div class="mx-auto mb-3 w-75">
+    <%= form_with(model: [@task, @comment], local: true, class:"d-flex align-items-end justify-content-center") do |f| %>
+      <%= f.text_area :comment, :size=>"50x3",placeholder: "コメントする" %>
       <%= f.hidden_field :task_id, value: @task.id %>
-      <%= f.submit "投稿", class: "btn btn-success mb-4" %>
+      <%= f.submit "投稿", class: "btn btn-success ml-4 px-4 align-center", style:"height: 40px" %>
     <% end %>
   </div>
     <p class="font-weight-bold border-bottom">コメント件数：<%= @comments.count %>/<%= @task.comments.count%></p>
@@ -26,10 +26,10 @@
       <div class="comments-index mb-2">
         <p class="text-info d-inline mr-3"><%= comment.user.name %></p>
         <span class="text-secondary"><%= comment.created_at.strftime('%Y/%m/%d %H:%m') %><br></span>
-          <div class="d-flex">
-            <p class="font-weight-bold bg-light p-3 rounded-lg"><%= comment.comment %></p>
+          <div class="d-flex align-items-center">
+            <p class="font-weight-bold bg-light p-3 rounded-lg mw-75"><%= comment.comment %></p>
               <% if comment.user == current_user %>
-                <div class="ml-5">
+                <div class="ml-3">
                 <%= link_to "削除", task_comment_path(comment.task, comment), method: :delete ,data: { confirm: "本当に削除してもいいですか？" } ,class: 'btn btn-danger mr-3' %>
                   <%= link_to "編集", edit_task_comment_path(comment.task, comment), class: 'btn btn-info' %>
               <% end %>
