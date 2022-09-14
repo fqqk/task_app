@@ -63,7 +63,8 @@ Rails.application.configure do
   #device mailer
   config.action_mailer.default_url_options = { host: 'localhost', port: 8080 }
   config.action_mailer.delivery_method = :letter_opener_web
-
   #ngrokのアクセスを許可
   config.hosts << '.ngrok.io'
+  #docker使用時のネットワークエラー対策
+  config.web_console.whitelisted_ips = '172.18.0.1'
 end
