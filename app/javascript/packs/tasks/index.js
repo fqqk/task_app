@@ -1,46 +1,36 @@
 window.addEventListener('DOMContentLoaded', function() {
-  let radio_btns = document.querySelectorAll(`input[type='radio'][name='item']`);
-  for (let target of radio_btns) {
-    target.addEventListener('change', function () {
-      itemSelect(target);
+  const radio_btns = document.querySelectorAll(`input[type='radio'][name='item']`);
+  for (const element of radio_btns) {
+    element.addEventListener('change', function () {
+      replaceOptionList(element);
     });
   };
 });
 
-function itemSelect(target) {
-  let value = target.value;
-  if(value) {
-    changeOptionInnerHTML(value);
-  } else {
-    console.log("no value");
-  }
-}
-
-function addOptionList(value,q_name,q_id,gons) {
-  const select = document.querySelector("select");
+function replaceOptionList(target) {
+  const select = document.querySelector(".js-select-target")
   select.removeAttribute('name');
   select.removeAttribute('id');
-  select.setAttribute('name',q_name);
-  select.setAttribute('id',q_id);
-  const rm_target_user = document.querySelectorAll("option");
-  rm_target_user.forEach((target) => target.remove());
-  for(const gon of gons){
-      const option = document.createElement('option');
-      option.value = gon.id;
-      option.innerHTML = gon[value];
-      select.appendChild(option);
-  }
-}
+  const options = document.querySelectorAll("option");
+  options.forEach((option) => option.remove());
 
-function changeOptionInnerHTML(value) {
-  const tasks = gon.tasks;
-  const users = gon.users;
-
-  if(value == 'title') {
-    addOptionList(value,'q[id_eq]','q_id_eq',tasks);
-  } else if(value == 'content') {
-    addOptionList(value,'q[id_eq]','q_id_eq',tasks);
+  let records = "";
+  const value = target.value;
+  if(value == 'title' || value == 'content') {
+    select.setAttribute('name', 'q[id_eq]');
+    select.setAttribute('id', 'q_id_eq');
+    records = gon.tasks
   } else {
-    addOptionList(value,'q[user_id_eq]','q_user_id_eq',users);
+    select.setAttribute('name', 'q[user_id_eq]');
+    select.setAttribute('id', 'q_user_id_eq');
+    records = gon.users;
   }
+
+  for(const record of records){
+    const option = document.createElement('option');
+    option.value = record.id;
+    option.innerHTML = record[value];
+    select.appendChild(option);
+  }
+
 }

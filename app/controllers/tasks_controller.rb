@@ -7,7 +7,7 @@ class TasksController < ApplicationController
   def index
     @tasks = Task.incomplete.preload(:user)
     @results = @q.result.incomplete.page(params[:page])
-    gon.tasks = @tasks.as_json(:include => {:user => {:only => [:name]}})
+    gon.tasks = Task.select(:id, :title, :content)
     gon.users = User.select(:id, :name)
   end
 
@@ -22,12 +22,13 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = current_user.tasks.build(task_params)
+    @task = current_user.tasks.new(task_params)
     if @task.save
       @task.send_slack
       redirect_to task_url(@task), notice: t('notice.task_create_success')
     else
-      redirect_to new_task_url, alert: t('alert.task_create_failure')
+      flash.now[:alert] = t('alert.task_create_failure')
+      render :new
     end
   end
 
@@ -46,7 +47,8 @@ class TasksController < ApplicationController
     if @task.update(user_id: params[:user_id])
       redirect_to task_url(@task), notice: t('notice.task_update_assign_success')
     else
-      redirect_to tasks_url, alert: t('alert.task_update_assign_failure')
+      flash.now[:alert] = t('alert.task_update_assign_failure')
+      render :edit_assign
     end
   end
 
@@ -54,7 +56,8 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       redirect_to task_url(@task), notice: t('notice.task_update_success')
     else
-      redirect_to task_url(@task), alert: t('alert.task_update_failure')
+      flash.now[:alert] = t('alert.task_update_failure')
+      render :edit
     end
   end
 
@@ -62,14 +65,15 @@ class TasksController < ApplicationController
     if @task.destroy
       redirect_to tasks_url, notice: t('notice.task_destroy_success')
     else
-      redirect_to tasks_url, alert: t('alert.task_destroy_failure')
+      flash.now[:alert] = t('alert.task_destroy_failure')
+      render :index
     end
   end
 
   private
 
   def set_q
-    @q = Task.eager_load(:user).ransack(params[:q])
+    @q = Task.preload(:user).ransack(params[:q])
   end
 
   def set_task

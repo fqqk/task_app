@@ -12,9 +12,10 @@
 
   <body>
     <%= render "layouts/header" %>
-    <div class="container w-75">
-      <p class="notice p-2 m-2"><%= notice %></p>
-      <p class="alert p-2 m-2"><%= alert %></p>
+    <div class="container mw-75 py-3">
+      <% flash.each do |key, value| %>
+        <div class="<%= key %> p-2 m-2"><%= value %></div>
+      <% end %>
       <%= yield %>
     </div>
   </body>

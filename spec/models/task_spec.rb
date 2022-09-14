@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do
-  describe '#create' do
+  describe 'validation' do
     it "title, content, deadline, statusが存在すれば登録できること" do
       expect(create(:task)).to be_valid
     end

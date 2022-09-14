@@ -10,28 +10,25 @@ docker を使用
 - Ruby 2.6.3
 - Ruby on Rails 6.0.3
 
-intel チップ Mac での動作確認済み
-
-`現状 M1 チップ Mac では動作しません。`
-
 **【セットアップ】**
 
-こちらのプロジェクトをクローン後,ビルド
+clone
+
+```
+your dir > git clone https://github.com/fqqk/task_app.git
+```
+
+build
 
 ```
 your dir > docker compose build
 ```
 
-bundle install を実行して Gemfile.lock を更新
+db create & migrate
 
 ```
-your dir > docker compose exec web bundle install
-```
-
-package.json の中身に従って yarn.lock を更新
-
-```
-your di r> docker compose exec web yarn install
+your dir > docker-comopse run web rails db:create
+your dir > docker-comopse run web rails db:migrate
 ```
 
 コンテナ起動
@@ -46,18 +43,6 @@ Access to http://localhost:8080
 
 ```
 your dir > docker compose down
-```
-
-動作中のコンテナ確認
-
-```
-your dir > docker ps
-```
-
-コンテナ破棄
-
-```
-your dir> docker rm containerID
 ```
 
 ## [ER 図](er_diagram.md)
@@ -124,7 +109,7 @@ before_action :set_q, only: %i[index mypage]
 def index
   @tasks = Task.incomplete.preload(:user)
   @results = @q.result.incomplete.page(params[:page])
-  gon.tasks = @tasks.as_json(:include => {:user => {:only => [:name]}})
+  gon.tasks = Task.select(:id, :title, :content)
   gon.users = User.select(:id, :name)
 end
 
@@ -139,7 +124,7 @@ end
 private
 
 def set_q
-  @q = Task.eager_load(:user).ransack(params[:q])
+  @q = Task.preload(:user).ransack(params[:q])
 end
 ```
 
@@ -149,7 +134,7 @@ app/views/tasks/index.html.erb
 
 ```ruby
 <%= search_form_for(@q,class:'w-50 d-flex align-items-center', local: true) do |f| %>
-  <%= f.select :id_eq, options_from_collection_for_select(@tasks, :id ,:title) ,{include_blank: "選択してください"},  class: 'form-control search-select mr-2' %>
+  <%= f.select :id_eq, options_from_collection_for_select(@tasks,:id ,:title) ,{include_blank: "選択してください"},  class: 'form-control mr-2 js-select-target' %>
   <%= f.button '検索', class:"btn btn-primary w-25" %>
 <% end %>
 ```
@@ -162,51 +147,40 @@ app/javascript/packs/tasks/index.js
 
 ```javascript
 window.addEventListener("DOMContentLoaded", function () {
-  let radio_btns = document.querySelectorAll(
+  const radio_btns = document.querySelectorAll(
     `input[type='radio'][name='item']`
   );
-  for (let target of radio_btns) {
-    target.addEventListener("change", function () {
-      itemSelect(target);
+  for (const element of radio_btns) {
+    element.addEventListener("change", function () {
+      replaceOptionList(element);
     });
   }
 });
 
-function itemSelect(target) {
-  let value = target.value;
-  if (value) {
-    changeOptionInnerHTML(value);
-  } else {
-    console.log("no value");
-  }
-}
-
-function addOptionList(value, q_name, q_id, gons) {
-  const select = document.querySelector("select");
+function replaceOptionList(target) {
+  const select = document.querySelector(".js-select-target");
   select.removeAttribute("name");
   select.removeAttribute("id");
-  select.setAttribute("name", q_name);
-  select.setAttribute("id", q_id);
-  const rm_target_user = document.querySelectorAll("option");
-  rm_target_user.forEach((target) => target.remove());
-  for (const gon of gons) {
-    const option = document.createElement("option");
-    option.value = gon.id;
-    option.innerHTML = gon[value];
-    select.appendChild(option);
-  }
-}
+  const options = document.querySelectorAll("option");
+  options.forEach((option) => option.remove());
 
-function changeOptionInnerHTML(value) {
-  const tasks = gon.tasks;
-  const users = gon.users;
-
-  if (value == "title") {
-    addOptionList(value, "q[id_eq]", "q_id_eq", tasks);
-  } else if (value == "content") {
-    addOptionList(value, "q[id_eq]", "q_id_eq", tasks);
+  let records = "";
+  const value = target.value;
+  if (value == "title" || value == "content") {
+    select.setAttribute("name", "q[id_eq]");
+    select.setAttribute("id", "q_id_eq");
+    records = gon.tasks;
   } else {
-    addOptionList(value, "q[user_id_eq]", "q_user_id_eq", users);
+    select.setAttribute("name", "q[user_id_eq]");
+    select.setAttribute("id", "q_user_id_eq");
+    records = gon.users;
+  }
+
+  for (const record of records) {
+    const option = document.createElement("option");
+    option.value = record.id;
+    option.innerHTML = record[value];
+    select.appendChild(option);
   }
 }
 ```
