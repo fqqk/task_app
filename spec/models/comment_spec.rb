@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-  describe '#create' do
+  describe 'validation' do
     it "commentが存在すれば登録できること" do
       expect(create(:comment)).to be_valid
     end
