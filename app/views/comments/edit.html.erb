@@ -1,4 +1,11 @@
 <div class="body-y-margin container w-50">
+  <% if @comment.errors.any? %>
+    <ul>
+    <% @comment.errors.full_messages.each do |message| %>
+      <li class="text-danger font-weight-bold"><%= message %></li>
+    <% end %>
+    </ul>
+  <% end %>
   <h1 class="text-center">コメント編集</h1>
   <%= render "form", comment: @comment %>
 </div>

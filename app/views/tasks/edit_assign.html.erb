@@ -1,4 +1,12 @@
 <div class="container">
+  <% if @task.errors.any? %>
+    <ul>
+    <% @task.errors.full_messages.each do |message| %>
+      <li class="text-danger font-weight-bold"><%= message %></li>
+    <% end %>
+    </ul>
+  <% end %>
+
   <h1>アサイン</h1>
   <div class="d-flex justify-content-between">
     <div>
