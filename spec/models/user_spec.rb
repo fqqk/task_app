@@ -31,4 +31,24 @@ RSpec.describe User, type: :model do
       expect(another_user.errors[:email]).to include("はすでに存在します")
     end
   end
+
+  describe "Association" do
+    it "ユーザーが削除された場合、タスクも同時に削除されること" do
+      user = FactoryBot.build(:user)
+      user.tasks << FactoryBot.build(:task)
+      user.save
+      expect {
+        user.destroy
+      }.to change(Task, :count).by(-1)
+    end
+
+    it "ユーザーが削除された場合、コメントも同時に削除されること" do
+      user = FactoryBot.build(:user)
+      user.comments << FactoryBot.build(:comment)
+      user.save
+      expect {
+        user.destroy
+      }.to change(Comment, :count).by(-1)
+    end
+  end
 end
