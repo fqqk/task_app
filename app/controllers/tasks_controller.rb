@@ -1,31 +1,20 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[show edit update destroy assign update_assign]
-  before_action :is_authorized_user?, only: %i[ edit update destroy assign update_assign]
   before_action :authenticate_user!
-  before_action :set_q, only: [ :index, :search, :mypage ]
+  before_action :set_task, only: %i[show]
+  before_action :set_mytask, only: %i[edit update destroy update_assign edit_assign]
+  before_action :set_q, only: %i[index mypage]
 
   def index
-    if params[:new]
-      @tasks = Task.latest.page(params[:page])
-    elsif params[:old]
-      @tasks = Task.old.page(params[:page])
-    elsif params[:emergency]
-      @tasks = Task.emergency.page(params[:page])
-    else
-     @tasks = Task.where.not(status:"complete").page(params[:page])
-    end
+    @tasks = Task.incomplete.preload(:user)
+    @results = @q.result.incomplete.page(params[:page])
+    gon.tasks = Task.select(:id, :title, :content)
+    gon.users = User.select(:id, :name)
   end
 
   def mypage
-    if params[:new]
-      @mytasks = current_user.tasks.latest.page(params[:page])
-    elsif params[:old]
-      @mytasks = current_user.tasks.old.page(params[:page])
-    elsif params[:emergency]
-      @mytasks = current_user.tasks.emergency.page(params[:page])
-    else
-      @mytasks = current_user.tasks.where.not(status: "complete").page(params[:page])
-    end
+    @tasks = current_user.tasks.incomplete
+    gon.tasks = @tasks
+    @results = @q.result.where(user_id: current_user.id).incomplete.page(params[:page])
   end
 
   def new
@@ -33,60 +22,58 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
-    @task.user_id = current_user.id
+    @task = current_user.tasks.new(task_params)
     if @task.save
       @task.send_slack
-      redirect_to task_url(@task), notice: t(".notice")
+      redirect_to task_url(@task), notice: t('notice.task_create_success')
     else
-      redirect_to new_task_url, alert: t(".alert")
+      flash.now[:alert] = t('alert.task_create_failure')
+      render :new
     end
   end
 
   def show
     @comment = Comment.new
-    @comments = @task.comments.reverse_order.page(params[:page]).per(5)
+    @comments = @task.comments.reverse_order.preload(:user).page(params[:page])
   end
 
-  def edit
-  end
+  def edit;end
 
-  def assign
+  def edit_assign
     @users = User.all
   end
 
   def update_assign
-    if @task.update(user_id:params[:task][:user_id])
-      redirect_to task_url(@task), notice: t(".notice")
+    if @task.update(user_id: params[:user_id])
+      redirect_to task_url(@task), notice: t('notice.task_update_assign_success')
     else
-      redirect_to tasks_url, alert: t(".alert")
+      flash.now[:alert] = t('alert.task_update_assign_failure')
+      render :edit_assign
     end
   end
 
   def update
     if @task.update(task_params)
-      redirect_to task_url(@task), notice: t(".notice")
+      redirect_to task_url(@task), notice: t('notice.task_update_success')
     else
-      redirect_to task_url(@task), alert: t(".alert")
+      flash.now[:alert] = t('alert.task_update_failure')
+      render :edit
     end
   end
 
   def destroy
     if @task.destroy
-      redirect_to tasks_url, notice: t(".notice")
+      redirect_to tasks_url, notice: t('notice.task_destroy_success')
     else
-      redirect_to tasks_url, alert: t(".alert")
+      flash.now[:alert] = t('alert.task_destroy_failure')
+      render :index
     end
-  end
-
-  def search
-    @results = @q.result
   end
 
   private
 
   def set_q
-    @q = Task.ransack(params[:q])
+    @q = Task.preload(:user).ransack(params[:q])
   end
 
   def set_task
@@ -97,8 +84,8 @@ class TasksController < ApplicationController
     params.require(:task).permit(:title, :content, :deadline, :status)
   end
 
-  def is_authorized_user?
-    @tasks = current_user.tasks
-    redirect_to tasks_url, alert: t(".alert") unless @tasks.exists?(id: params[:id])
+  def set_mytask
+    @task = current_user.tasks.find_by(id: params[:id])
+    redirect_to tasks_url, alert: t("alert.authorize_invalid") unless @task
   end
 end

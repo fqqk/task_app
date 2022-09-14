@@ -1,0 +1,20 @@
+ja:
+  notice:
+    task_create_success: 新しいタスクを登録しました。
+    task_update_success: タスクを更新しました。
+    task_update_assign_success: 担当者を変更しました。
+    task_destroy_success: タスクを削除しました。
+    comment_create_success: コメントを投稿しました。
+    comment_update_success: コメントを更新しました。
+    comment_destroy_success: コメントを削除しました。
+  alert:
+    field_invalid: 入力項目に誤りがあります。
+    authorize_invalid: 権限がありません
+    input_comment: コメントを入力してください。
+    task_create_failure: タスクの作成に失敗しました。
+    task_update_failure: タスクの更新に失敗しました。
+    task_destroy_failure: タスクの削除に失敗しました。
+    task_update_assign_failure: 担当者を選択してください。
+    comment_create_failure: コメントの作成に失敗しました。
+    comment_update_failure: コメントの更新に失敗しました。
+    comment_destroy_failure: コメントの削除に失敗しました。

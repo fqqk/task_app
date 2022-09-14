@@ -4,16 +4,18 @@
     <title>TaskApp</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= include_gon %>
 
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
   </head>
 
   <body>
     <%= render "layouts/header" %>
-    <div class="w-75 mx-auto">
-      <p class="notice p-2 m-2"><%= notice %></p>
-      <p class="alert p-2 m-2"><%= alert %></p>
+    <div class="container mw-75 py-3">
+      <% flash.each do |key, value| %>
+        <div class="<%= key %> p-2 m-2"><%= value %></div>
+      <% end %>
       <%= yield %>
     </div>
   </body>

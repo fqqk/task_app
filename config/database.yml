@@ -15,4 +15,4 @@ development:
 test:
   <<: *default
   database: task_app_test
-  db: <%= ENV.fetch("PGHOST") { 'db' } %>
+  # db: <%= ENV.fetch("PGHOST") { 'db' } %>

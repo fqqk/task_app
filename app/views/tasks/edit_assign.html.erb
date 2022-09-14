@@ -1,0 +1,34 @@
+<div class="container">
+  <% if @task.errors.any? %>
+    <ul>
+    <% @task.errors.full_messages.each do |message| %>
+      <li class="text-danger font-weight-bold"><%= message %></li>
+    <% end %>
+    </ul>
+  <% end %>
+
+  <h1>アサイン</h1>
+  <div class="d-flex justify-content-between">
+    <div>
+      <p>現在アサインされているユーザー</p>
+      <p><%= @task.user.name %></p>
+    </div>
+    <div>
+      <p>新しくアサインするユーザー</p>
+      <%= form_with(model: @tasks, url: update_assign_task_path, local: true, method: :patch) do |form| %>
+        <div class="select">
+          <%= form.collection_select(:user_id, @users, :id, :name, {include_blank: '選択してください'}, {class: "form-control"})%>
+        </div>
+        <div class="float-right">
+          <%= form.submit 'アサインする', class:"btn btn-success"%>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="bg-light py-5 px-4 rounded-sm">
+    <h1><%= @task.title %></h1>
+    <p><%= @task.content %></p>
+    <p>期限: <%= @task.deadline %></p>
+    <p>ステータス: <%= status_text(@task.status) %></p>
+  </div>
+</div>

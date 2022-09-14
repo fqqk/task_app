@@ -1,32 +1,32 @@
 <%= form_with(model: task, local: true) do |form| %>
-  <div class="form-item">
-    <%= form.label :title, class:"form-label font-weight-bold" %>
-    <%= form.text_field :title,class:"form-control" %>
+  <div class='form-item'>
+    <%= form.label :title, class:'form-label font-weight-bold' %>
+    <%= form.text_field :title, class:'form-control' %>
   </div>
 
-  <div class="form-item">
-    <%= form.label :content, class:"form-label font-weight-bold" %>
-    <%= form.text_area :content, class:"form-control",rows:"3" %>
+  <div class='form-item'>
+    <%= form.label :content, class:'form-label font-weight-bold' %>
+    <%= form.text_area :content, class:'form-control',rows:'3' %>
   </div>
 
-  <div class="form-item">
-    <%= form.label :deadline, class:"form-label font-weight-bold" %>
+  <div class='form-item'>
+    <%= form.label :deadline, class:'form-label font-weight-bold' %>
     <%= form.datetime_select :deadline %>
   </div>
 
-  <div class="form-item">
-    <%= form.label :status, class:"form-label font-weight-bold" %>
-    <%= form.label "未対応", class:"form-label" %>
-    <%= form.radio_button :status, "incomplete" %>
-    <%= form.label "対応中", class:"form-label" %>
-    <%= form.radio_button :status, "doing" %>
-    <% if action_name == "edit"%>
-      <%= form.label "完了", class:"form-label" %>
-      <%= form.radio_button :status, "complete" %>
+  <div class='form-item'>
+    <%= form.label :status, class:'form-label font-weight-bold' %>
+    <%= form.radio_button :status, :incomplete %>
+    <%= form.label :status_incomplete, '未対応', class:'form-label' %>
+    <%= form.radio_button :status, :doing %>
+    <%= form.label :status_doing, '対応中', class:'form-label' %>
+    <% if action_name == 'edit'%>
+      <%= form.radio_button :status, :complete %>
+      <%= form.label :status_complete, '完了', class:'form-label' %>
     <% end %>
   </div>
 
-  <div class="float-end">
-      <%= form.submit button_text, class:"btn btn-success" %>
+  <div class='float-end'>
+      <%= form.submit button_text, class:'btn btn-success' %>
   </div>
 <% end %>

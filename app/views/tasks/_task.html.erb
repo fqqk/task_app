@@ -1,16 +1,16 @@
-<div class=<%= "#{border_style(task.deadline)}" %>>
-  <p class=<%= "#{p_style(task.deadline)}" %>><%= task.title%></p>
-  <div class="p-3">
+<div class=<%= now_is_within_deadline?(task.deadline) ? 'border-within-deadline' : 'border-over-deadline' %>>
+  <p class=<%= now_is_within_deadline?(task.deadline) ? 'p-within-deadline' : 'p-over-deadline' %>><%= task.title%></p>
+  <div class='p-3'>
     <p><%= task.content%></p>
-    <p>作成日: <%= task.created_at%></p>
-    <p>期限: <%= task.deadline%></p>
+    <p>作成日: <%= task.created_at.strftime('%Y/%m/%d %H:%M') %></p>
+    <p>期限: <%= task.deadline.strftime('%Y/%m/%d %H:%M') %></p>
     <p>担当者: <%= task.user.name%></p>
     <p>ステータス: <%= status_text(task.status)%></p>
-    <div class="btn-list mb-3">
-      <%= link_to "詳細", task_path(task), class:"btn btn-outline-dark"%>
+    <div class='btn-list mb-3'>
+      <%= link_to '詳細', task_path(task), class:'btn btn-outline-dark'%>
       <% if task.user == current_user%>
-        <%= link_to "編集", edit_task_path(task), class:"btn btn-info"%>
-        <%= link_to "削除", task_path(task),method: :delete,  class:"btn btn-danger"%>
+        <%= link_to '編集', edit_task_path(task), class:'btn btn-info'%>
+        <%= link_to '削除', task_path(task),method: :delete,  class:'btn btn-danger'%>
       <% end %>
     </div>
   </div>

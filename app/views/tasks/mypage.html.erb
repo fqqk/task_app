@@ -1,27 +1,38 @@
+<%= javascript_pack_tag 'tasks/index' %>
+
 <div class="container">
-<div class="d-flex justify-content-between align-items-center">
   <h1 class="fw-bold">マイタスク</h1>
-  <div class="d-flex align-items-center">
-      <%= search_form_for @q, url: search_tasks_path do |f| %>
-        <div class="d-flex mr-5">
-          <%= f.search_field :title_cont, placeholder: "タスクタイトルで検索", class:"form-control mr-2" %>
-          <%= f.submit '検索', class:"btn btn-primary"%>
+    <div class='d-flex justify-content-between align-items-center my-5'>
+      <div id='target'>
+        <label class="font-weight-bold">【検索項目】</label>
+        <label for='title' class="font-weight-bold">タイトル</label>
+        <input name='item' type='radio' value='title' id='title' checked/>
+        <label for='content' class="font-weight-bold">内容</label>
+        <input name='item' type='radio' value='content' id='content'>
+        <div>
+          <label class="font-weight-bold">【並べ替え】</label>
+          <label for='content' class="font-weight-bold mr-4"><%= sort_link(@q, :created_at, "作成日") %></label>
+          <label for='content' class="font-weight-bold"><%= sort_link(@q, :deadline, "期限") %></label>
         </div>
+      </div>
+
+      <%= search_form_for(@q,url: mypage_tasks_url, class:'w-50 d-flex align-items-center', local: true) do |f| %>
+        <%= f.select :id_eq, options_from_collection_for_select(@tasks, :id ,:title) ,{include_blank: '選択してください'},  class: 'form-control js-select-target mr-2' %>
+        <%= f.button '検索', class:"btn btn-primary w-25" %>
       <% end %>
-      <p class="mb-0 mr-5"><%= link_to "新着", mypage_tasks_path(new: "true")%></p>
-      <p class="mb-0 mr-5"><%= link_to "古い", mypage_tasks_path(old: "true")%></p>
-      <p class="mb-0"><%= link_to "即対応必須", mypage_tasks_path(emergency: "true")%></p>
-  </div>
-</div>
+    </div>
+
   <%= link_to "New Task", new_task_path, class:"btn btn-outline-dark" %>
-  <div class="row row-col">
-    <% @mytasks.each do |mytask| %>
+
+  <div class="row">
+    <% @results.each do |task| %>
     <div class="d-flex flex-column col-xs-1 col-lg-6 mb-3">
-      <%= render mytask %>
+      <%= render task %>
     </div>
     <% end %>
   </div>
+
    <div class="d-flex fs-5 justify-content-center mt-5">
-    <%= paginate @mytasks, theme: 'twitter-bootstrap-4' %>
+    <%= paginate @results, theme: 'twitter-bootstrap-4' %>
   </div>
 </div>
