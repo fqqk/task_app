@@ -13,7 +13,9 @@ class Task < ApplicationRecord
   }
 
   def date_after_today?
-    errors.add(:deadline, "は現在以降のものを選択してください") if deadline < Time.zone.now
+    if deadline
+      errors.add(:deadline, "は現在以降のものを選択してください") if deadline < Time.zone.now
+    end
   end
 
   def send_slack
