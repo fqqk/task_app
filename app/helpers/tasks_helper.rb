@@ -7,6 +7,16 @@ module TasksHelper
     end
   end
 
+  def status_text(task_status)
+    if task_status == 'incomplete'
+      '未対応'
+    elsif task_status == 'doing'
+      '対応中'
+    else
+      '完了'
+    end
+  end
+
   def now_is_within_deadline?(deadline)
     deadline > Time.now
   end
