@@ -17,6 +17,26 @@ RSpec.describe TasksHelper, type: :helper do
     end
   end
 
+  describe '#status_text' do
+    context '引数がincompleteの場合' do
+      it '未対応という文字列を返すこと' do
+        expect(status_text('incomplete')).to eq '未対応'
+      end
+    end
+
+    context '引数がdoingの場合' do
+      it '対応中という文字列を返すこと' do
+        expect(status_text('doing')).to eq '対応中'
+      end
+    end
+
+    context '引数がcompleteの場合' do
+      it '完了という文字列を返すこと' do
+        expect(status_text('complete')).to eq '完了'
+      end
+    end
+  end
+
   describe '#now_is_within_deadline?' do
     it "期限が現在よりも前であればfalseを返すこと" do
       expect(now_is_within_deadline?(Time.now.yesterday)).to eq false
