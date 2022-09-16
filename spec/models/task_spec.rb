@@ -46,4 +46,10 @@ RSpec.describe Task, type: :model do
 
     # end
   end
+
+  describe "Association" do
+    it "ユーザーモデルと関連があること" do
+      expect(build(:task).user_id).to eq nil
+    end
+  end
 end

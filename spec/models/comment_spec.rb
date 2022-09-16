@@ -18,4 +18,14 @@ RSpec.describe Comment, type: :model do
       expect(comment.errors[:comment]).to include("は140文字以内で入力してください")
     end
   end
+
+  describe "Association" do
+    it "ユーザーモデルと関連があること" do
+      expect(build(:comment).user_id).to eq nil
+    end
+
+    it "タスクモデルと関連があること" do
+      expect(build(:comment).task_id).to eq nil
+    end
+  end
 end
