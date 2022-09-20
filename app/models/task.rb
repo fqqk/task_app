@@ -13,7 +13,7 @@ class Task < ApplicationRecord
   }
 
   def date_after_today?
-    if deadline
+    if deadline_changed?
       errors.add(:deadline, "は現在以降のものを選択してください") if deadline < Time.zone.now
     end
   end
