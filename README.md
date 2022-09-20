@@ -305,13 +305,52 @@ views/tasks/index.html.erb
 </div>
 ```
 
+### 6)日時選択バリデーション
+
+タスク新規作成、編集時に使用
+期限変更時、現在時刻よりも以前のタスクを作成できないようにした
+
+> 該当コード
+
+models/task.rb
+
+```Ruby
+validate :date_after_today?
+
+def date_after_today?
+  if deadline_changed?
+    errors.add(:deadline, "は現在以降のものを選択してください") if deadline < Time.zone.now
+  end
+end
+```
+
+views/tasks/\_form.html.erb
+
+```html
+<div class="form-item">
+  <%= form.label :deadline, class:'form-label font-weight-bold' %> <%= raw
+  sprintf(form.datetime_select(:deadline, {start_year: Time.zone.now.year,
+  end_year: Time.zone.now.next_year.year, default: Time.zone.now, minute_step:
+  10, use_two_digit_numbers: true, date_separator: '%s', datetime_separator:
+  '%s', time_separator: '%s'}), '年', '月', '日', '時') + '分'%>
+</div>
+```
+
 # 苦労したこと
 
 - ransack と JavaScript の記述の部分で turbolinks に振り回されたこと
 - rails に慣れること
+
+# タスクアプリ:拡張できそうな箇所
+
+- コメント編集の ajax 化
+- send_slack メソッドのクラス化
+- 他のアクションに応じた send_slack
+- レスポンシブの充実化
 
 # 今後やってみたいこと
 
 - csv ファイルを扱ってみたい
 - SQL 頑張りたい
 - gem 探しの旅
+- インフラ周り理解したい...
