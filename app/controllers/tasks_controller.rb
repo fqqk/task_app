@@ -5,16 +5,16 @@ class TasksController < ApplicationController
   before_action :set_q, only: %i[index mypage]
 
   def index
-    @tasks = Task.incomplete.preload(:user)
-    @results = @q.result.incomplete.page(params[:page])
-    gon.tasks = Task.select(:id, :title, :content)
-    gon.users = User.select(:id, :name)
+    @tasks = Task.incomplete.preload(:user).order(:title)
+    @results = @q.result.incomplete.page(params[:page]).order(:title)
+    gon.tasks = Task.select(:id, :title, :content).order(:title)
+    gon.users = User.select(:id, :name).order(:name)
   end
 
   def mypage
-    @tasks = current_user.tasks.incomplete
+    @tasks = current_user.tasks.incomplete.order(:title)
     gon.tasks = @tasks
-    @results = @q.result.where(user_id: current_user.id).incomplete.page(params[:page])
+    @results = @q.result.where(user_id: current_user.id).incomplete.page(params[:page]).order(:title)
   end
 
   def new

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe '#create' do
+  describe 'validation' do
     it "name, email, password, password_confirmationが存在すれば登録できること" do
       expect(build(:user)).to be_valid
     end
@@ -29,6 +29,24 @@ RSpec.describe User, type: :model do
       another_user = build(:user, email: user.email)
       another_user.valid?
       expect(another_user.errors[:email]).to include("はすでに存在します")
+    end
+  end
+
+  describe "Association" do
+    it "ユーザーが削除された場合、タスクも同時に削除されること" do
+      user = FactoryBot.create(:user)
+      task = FactoryBot.create(:task, user_id: user.id)
+      expect {
+        user.destroy
+      }.to change(Task, :count).by(-1)
+    end
+
+    it "ユーザーが削除された場合、コメントも同時に削除されること" do
+      user = FactoryBot.create(:user)
+      comment = FactoryBot.create(:comment, user_id: user.id)
+      expect {
+        user.destroy
+      }.to change(Comment, :count).by(-1)
     end
   end
 end

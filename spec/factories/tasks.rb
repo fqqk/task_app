@@ -4,6 +4,6 @@ FactoryBot.define do
     content { "テストタスクです" }
     deadline { Time.current.since(7.days) }
     status { "doing" }
-    association :user
+    user
   end
 end

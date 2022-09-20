@@ -26,28 +26,29 @@ RSpec.describe "Tasks", type: :request do
   describe "#create" do
     context "ログイン済みユーザーの場合" do
       context "タスク作成に成功した場合" do
-        # it "タスクが作成されている" do
-        #   task_params = FactoryBot.attributes_for(:task)
-        #   sign_in @user
-        #   expect {
-        #     post tasks_path, params: { task: task_params }
-        #   }.to change(@user.tasks, :count).by(1)
-        # end
+        it "タスクが作成されている" do
+          task_params = FactoryBot.attributes_for(:task)
+          sign_in @user
+          expect {
+            post tasks_path, params: { task: task_params }
+          }.to change(@user.tasks, :count).by(1)
+        end
 
-        # it "タスク詳細ページに遷移すること" do
-        #   task_params = FactoryBot.attributes_for(:task)
-        #   sign_in @user
-        #   post tasks_path, params: { task: task_params }
-        #   expect(response).to redirect_to "/tasks/1"
-        # end
+        it "タスク詳細ページに遷移すること" do
+          task_params = FactoryBot.attributes_for(:task)
+          sign_in @user
+          post tasks_path, params: { task: task_params }
+          expect(response).to have_http_status '302'
+          expect(response).to redirect_to task_url(Task.last)
+        end
       end
 
       context "タスク作成に失敗した場合" do
-        it "新規タスク作成画面にリダイレクトすること" do
+        it "新規タスク作成画面がレンダリングされること" do
           task_params = FactoryBot.attributes_for(:task, title: nil)
           sign_in @user
           post tasks_path, params: { task: task_params }
-          expect(response).to redirect_to new_task_url
+          expect(response).to render_template(:new)
           expect(flash[:alert]).to be_present
         end
       end
@@ -64,6 +65,7 @@ RSpec.describe "Tasks", type: :request do
       it "ログイン画面にリダイレクトすること" do
         task_params = FactoryBot.attributes_for(:task)
         post tasks_path, params: { task: task_params }
+        expect(response).to have_http_status '302'
         expect(response).to redirect_to "/users/sign_in"
       end
     end
@@ -91,12 +93,12 @@ RSpec.describe "Tasks", type: :request do
       end
 
       context "タスクの更新に失敗した場合" do
-        it "タスクの詳細画面に遷移すること" do
+        it "タスクの編集画面がレンダリングされること" do
           sign_in @user
           task = FactoryBot.create(:task, user: @user)
           task_params = FactoryBot.attributes_for(:task, content: nil)
           put task_path(task), params: { task: task_params }
-          expect(response).to redirect_to task_url(task)
+          expect(response).to render_template(:edit)
           expect(flash[:alert]).to be_present
         end
       end
@@ -129,9 +131,9 @@ RSpec.describe "Tasks", type: :request do
         it "変更ができること" do
           sign_in @user
           task = FactoryBot.create(:task, user: @user)
-          patch update_assign_task_path(task), params: {task: FactoryBot.attributes_for(:task, user: @other_user)}
+          patch update_assign_task_path(task.id), params: {user_id: @other_user.id}
           task.reload
-          expect(task.user).to eq "別人"
+          expect(task.user_id).to eq @other_user.id
         end
 
         it "詳細画面に遷移すること" do
@@ -146,8 +148,9 @@ RSpec.describe "Tasks", type: :request do
         it "変更できないこと" do
           sign_in @user
           task = FactoryBot.create(:task, user: @other_user)
-          patch update_assign_task_path(task), params: {task: FactoryBot.attributes_for(:task, user: @user)}
-          expect(task.reload.user.name).to eq "福士斗真"
+          expect {
+            patch update_assign_task_path(task), params: {task: FactoryBot.attributes_for(:task, user: @user)}
+          }.to change(Task, :count).by(0)
         end
 
         it "一覧画面にリダイレクトすること" do
@@ -155,6 +158,7 @@ RSpec.describe "Tasks", type: :request do
           task = FactoryBot.create(:task, user: @other_user)
           patch update_assign_task_path(task), params: {task: FactoryBot.attributes_for(:task, user: @user)}
           expect(response).to redirect_to tasks_url
+          expect(flash[:alert]).to eq '権限がありません'
         end
       end
     end
