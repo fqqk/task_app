@@ -12,6 +12,7 @@
   <div class='form-item'>
     <%= form.label :deadline, class:'form-label font-weight-bold' %>
     <%= raw sprintf(form.datetime_select(:deadline, {start_year: Time.zone.now.year, end_year: Time.zone.now.next_year.year, default: Time.zone.now, minute_step: 10, use_two_digit_numbers: true, date_separator: '%s', datetime_separator: '%s', time_separator: '%s'}), '年', '月', '日', '時') + '分'%>
+  </div>
 
   <div class='form-item'>
     <%= form.label :status, class:'form-label font-weight-bold' %>
