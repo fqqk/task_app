@@ -34,18 +34,16 @@ RSpec.describe User, type: :model do
 
   describe "Association" do
     it "ユーザーが削除された場合、タスクも同時に削除されること" do
-      user = FactoryBot.build(:user)
-      user.tasks << FactoryBot.build(:task)
-      user.save
+      user = FactoryBot.create(:user)
+      task = FactoryBot.create(:task, user_id: user.id)
       expect {
         user.destroy
       }.to change(Task, :count).by(-1)
     end
 
     it "ユーザーが削除された場合、コメントも同時に削除されること" do
-      user = FactoryBot.build(:user)
-      user.comments << FactoryBot.build(:comment)
-      user.save
+      user = FactoryBot.create(:user)
+      comment = FactoryBot.create(:comment, user_id: user.id)
       expect {
         user.destroy
       }.to change(Comment, :count).by(-1)
