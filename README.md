@@ -336,10 +336,11 @@ views/tasks/\_form.html.erb
 </div>
 ```
 
-# 苦労したこと
+# 頑張ったポイント
 
 - ransack と JavaScript の記述の部分で turbolinks に振り回されたこと
 - rails に慣れること
+- RSpec 書きました！
 
 # タスクアプリ:拡張できそうな箇所
 
